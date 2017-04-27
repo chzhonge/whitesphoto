@@ -8,6 +8,7 @@
                     <div class="panel-body">
                         I'm an example component!
                     </div>
+                    <button v-on:click="testClick">click me</button>
                 </div>
             </div>
         </div>
@@ -17,7 +18,14 @@
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.')
+            console.log('Component mounted.');
+
+        },
+        methods: {
+            testClick:function () {
+                console.log('test');
+                this.$emit('testClick','hello');
+            }
         }
     }
 </script>

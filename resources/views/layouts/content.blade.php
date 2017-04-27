@@ -33,6 +33,6 @@
         </a>
     </div>
 @else
-    <project-name-bar></project-name-bar>
+
 
 @endif

@@ -13,15 +13,16 @@
                                 <input class='form-control' v-model="projectName" type="text">
                             </div>
                             <div class="form-group" v-show="projectNameBarVisible">
-                                <button type="button" v-on:click="createProject" v-bind:disabled="!projectName" class='btn btn-success'>
+                                <button type="button" v-on:click="createNewProject" v-bind:disabled="!projectName" class='btn btn-success'>
                                 確定
                                 </button>
-                                <button type="button" v-on:click="cancelProject" class='btn btn-default'>
+                                <button type="button" v-on:click="cancelCreateNewProject" class='btn btn-default'>
                                 取消
                                 </button>
                             </div>
                         </div>
                     </transition>
+                    <!--TODO extract Upload.vue -->
                     <div class="form-group" v-show="!projectNameBarVisible">
                         <button type="button" v-on:click="changeViewToUploadView" class='btn btn-primary btn-lg'>
                             上傳作品
@@ -30,34 +31,49 @@
                 </form>
             </div>
         </div>
+       <!--<router-view></router-view>-->
     </div>
 </template>
 
 <script>
 
+const createProjectNameURL = 'http://localhost/whitesphoto/public/test';
+
+import { router } from '../../app';
 
 export default {
     name:'ProjectNameBar',
     data () {
         return {
-        projectNameBarVisible:false,
-        projectName:''
+            projectNameBarVisible:false,
+            projectName:''
         }
     },
-    computed: {},
+    computed: {
+
+    },
     mounted () {},
     methods: {
-        showAddProjectNameBar: function() {
+        showAddProjectNameBar:function() {
             this.projectNameBarVisible = true;
         },
-        createProject: function() {
+        createNewProject:function() {
             this.projectNameBarVisible = false;
-            swal("Here's a message!");
+
+            axios.get(createProjectNameURL)
+                .then(function (response) {
+                    swal("Here's a message!");
+                    console.log(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
-        cancelProject: function() {
+        cancelCreateNewProject:function() {
             this.projectNameBarVisible = false;
         },
-        changeViewToUploadView: function() {
+        changeViewToUploadView:function() {
+        // TODO to laravel router make
 
         }
     }
@@ -69,7 +85,18 @@ export default {
   transition: opacity .5s
 }
 .fade-enter, .fade-leave-active {
-  opacity: 0
+    opacity: 0
+}
+.breadcrumb-zh {
+     background-color: #ffffff;
+}
+.gray-font {
+    color: #777;
+    /*cursor:text;*/
+    text-decoration:none;
+}
+.gray-font:hover {
+    text-decoration:none;
 }
 
 </style>

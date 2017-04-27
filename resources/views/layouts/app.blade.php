@@ -11,8 +11,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sweetalert.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/sweetalert.css')}}" rel="stylesheet" >
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
@@ -24,9 +25,7 @@
     <div id="app">
         <div class="container">
             @include('layouts.navbar')
-            {{--@include('layouts.content')--}}
             @yield('content')
-            @include('layouts.footer')
         </div>
     </div>
 

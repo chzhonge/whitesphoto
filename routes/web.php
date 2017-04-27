@@ -13,16 +13,24 @@
 
 Route::get('/', function () {
     return view('home');
+})->name('home');
+
+
+//Route::get('/test', function () {
+//    return "123";
+//});
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/test', function ()    {
+        return "123";
+    });
+
 });
 
-Route::get('/vue', function () {
-    return view('welcome');
-});
+Route::resource('project', 'ProjectController');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+
