@@ -46,7 +46,8 @@
 </template>
 
 <script>
-    const createProjectNameURL = 'http://localhost/whitesphoto/public/test';
+    const createProjectURL = 'http://localhost/whitesphoto/public/project';
+    const getAllProjectURL = 'http://localhost/whitesphoto/public/project';
 
     import { router } from '../../app';
     export default {
@@ -69,11 +70,12 @@
             },
             createNewProject:function() {
                 this.projectNameBarVisible = false;
-
-                axios.get(createProjectNameURL)
+                axios.post(createProjectURL, {
+                    ownerID: this.userID,
+                    name: this.projectName
+                })
                     .then(function (response) {
-                        swal("Here's a message!");
-                        console.log(response.data);
+                        console.log(response);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -81,6 +83,14 @@
             },
             cancelCreateNewProject:function() {
                 this.projectNameBarVisible = false;
+                axios.get(getAllProjectURL)
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                swal(this.userID.toString());
             },
             fillBreadCrumbClass:function (index) {
                 if (this.checkBreadCrumbLengthIsOne()) {

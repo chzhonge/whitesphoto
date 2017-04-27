@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     use SoftDeletes;
+
     protected $table = 'project';
     public $timestamps = true;
     /**
@@ -22,4 +23,9 @@ class Project extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    protected $attributes = [
+        'thumPath' => '',
+        'weight' =>0
+    ];
 }

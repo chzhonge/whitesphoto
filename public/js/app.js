@@ -13134,7 +13134,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var createProjectNameURL = 'http://localhost/whitesphoto/public/test';
+var createProjectURL = 'http://localhost/whitesphoto/public/project';
+var getAllProjectURL = 'http://localhost/whitesphoto/public/project';
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -13157,16 +13158,23 @@ var createProjectNameURL = 'http://localhost/whitesphoto/public/test';
         },
         createNewProject: function createNewProject() {
             this.projectNameBarVisible = false;
-
-            axios.get(createProjectNameURL).then(function (response) {
-                swal("Here's a message!");
-                console.log(response.data);
+            axios.post(createProjectURL, {
+                ownerID: this.userID,
+                name: this.projectName
+            }).then(function (response) {
+                console.log(response);
             }).catch(function (error) {
                 console.log(error);
             });
         },
         cancelCreateNewProject: function cancelCreateNewProject() {
             this.projectNameBarVisible = false;
+            axios.get(getAllProjectURL).then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error);
+            });
+            swal(this.userID.toString());
         },
         fillBreadCrumbClass: function fillBreadCrumbClass(index) {
             if (this.checkBreadCrumbLengthIsOne()) {

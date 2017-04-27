@@ -21,13 +21,11 @@ Route::get('/', function () {
 //});
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/test', function ()    {
-        return "123";
-    });
+    Route::resource('project', 'ProjectController');
 
 });
 
-Route::resource('project', 'ProjectController');
+
 
 Auth::routes();
 
