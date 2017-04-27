@@ -36,7 +36,7 @@
             </a>
         </div>
     @else
-        <breadcrumb></breadcrumb>
+        <breadcrumb :user-i-d="{{ @Auth::id() }}"></breadcrumb>
     @endif
 @endsection
 

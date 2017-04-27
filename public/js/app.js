@@ -13134,6 +13134,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+var createProjectNameURL = 'http://localhost/whitesphoto/public/test';
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'Breadcrumb',
@@ -13145,6 +13147,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+    props: ['userID'],
     computed: {},
     mounted: function mounted() {},
 

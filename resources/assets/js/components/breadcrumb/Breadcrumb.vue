@@ -58,6 +58,7 @@
                 breadcrumb:[{"name":'Home','path':'/'}]
             }
         },
+        props:['userID'],
         computed: {},
         mounted () {
 
