@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="row">
-            <router-view  v-on:pushOrPopBreadcrumb="checkActionTypeToAddOrRemove" ></router-view>
+            <router-view :projectData="projectData"  v-on:pushOrPopBreadcrumb="checkActionTypeToAddOrRemove" ></router-view>
         </div>
     </div>
 </template>
@@ -56,7 +56,15 @@
             return {
                 projectNameBarVisible:false,
                 projectName:'',
-                breadcrumb:[{"name":'Home','path':'/'}]
+                breadcrumb:[{"name":'Home','path':'/'}],
+                projectData:[
+                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
+                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
+                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
+                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
+                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
+                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
+                    {name : 'world', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 }]
             }
         },
         props:['userID'],
@@ -83,14 +91,6 @@
             },
             cancelCreateNewProject:function() {
                 this.projectNameBarVisible = false;
-                axios.get(getAllProjectURL)
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                swal(this.userID.toString());
             },
             fillBreadCrumbClass:function (index) {
                 if (this.checkBreadCrumbLengthIsOne()) {
@@ -113,7 +113,8 @@
             },
             changeViewToUploadView:function() {
                 router.push({ path: '/upload' });
-            }
+            },
+
         },
         components: {},
     }
