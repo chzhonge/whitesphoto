@@ -10,7 +10,8 @@
             <item v-for="subProjectData in projectData"
                   v-bind:itemData="subProjectData"
                   v-bind:selectedProjectID="selectedProjectID"
-                  v-on:editProject="lockThisProject"
+                  v-on:editItemInfo="lockThisProject"
+                  v-on:changeCover="showChangeCoverMenu"
             >
             </item>
         </div>
@@ -19,7 +20,7 @@
 
 <script>
     import Item from '../item/Item.vue';
-    import { GET_ALL_PROJECT } from '../api';
+    import { PROJECT_URL } from '../api';
 
     export default {
         name: '',
@@ -43,7 +44,7 @@
         methods: {
             getAllProject:function () {
                 let self = this;
-                axios.get(GET_ALL_PROJECT)
+                axios.get(PROJECT_URL)
                     .then(function (response) {
                         self.projectData = response.data.data;
                     })
@@ -51,10 +52,10 @@
                         console.log(error);
                     });
             },
-            showModal:function(collectionID) {
+            showChangeCoverMenu:function(projectID) {
                 this.modal = true;
-                console.log('showModal');
-                this.selectedProjectID = collectionID;
+                console.log('showChangeCoverMenu');
+                this.selectedProjectID = projectID;
             },
             closeModal:function() {
                 this.modal = false;

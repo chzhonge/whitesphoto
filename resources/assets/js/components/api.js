@@ -1,3 +1,2 @@
-const GET_ALL_PROJECT = './project';
-
-export {GET_ALL_PROJECT};
+const PROJECT_URL = './project';
+export {PROJECT_URL};

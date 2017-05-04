@@ -46,10 +46,10 @@ class ProjectRepository
 //            ->update(['name' => $request['name']]);
 //    }
 //
-//    public function deleteProject(int $id)
-//    {
-//        Project::where('id', $id)->delete();
-//    }
+    public function deleteProject(int $id)
+    {
+        Project::where('id', $id)->where('ownerID', Auth::id())->delete();
+    }
 //
 //    public function updateProjectCover(int $collectionsID, string $photoThumPath)
 //    {

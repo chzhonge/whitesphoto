@@ -87,6 +87,7 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->projectRepository->deleteProject($id);
+        return response()->json(['data'=>'刪除成功']);
     }
 }
