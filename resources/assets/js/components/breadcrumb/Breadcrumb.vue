@@ -84,12 +84,12 @@
                     ownerID: this.userID,
                     name: this.projectName
                 })
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             cancelCreateNewProject:function() {
                 this.projectNameBarVisible = false;
