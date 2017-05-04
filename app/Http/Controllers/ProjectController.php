@@ -21,7 +21,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return '123';
+        return response()->json(['data' => $this->projectRepository->getUserAllProjects()]);
     }
 
     /**

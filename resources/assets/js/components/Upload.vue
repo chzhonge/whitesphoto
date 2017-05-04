@@ -1,60 +1,45 @@
 <template lang="html">
-<div class="row">
-    <div class="col-md-12 col-sm-2">
-        <form method="post" role="form">
-            <div class="panel panel-primary">
-                <div class="panel-heading text-center">
-                    <strong>上傳作品</strong>
+    <div class="col-md-12">
+        <form role="form">
+            <div class="form-group text-center" v-show="show" >
+                <div class="img-thumbnail" v-show="!show"style="width: 100%;"></div>
+                <div class="img-thumbnail" v-show="show" style="">
+                <img id='img' style="width: 100%;"/>
                 </div>
-                <div class="panel-body">
-                    <form role="form" v-on:submit.prevent method="post">
-                    <div class="form-group text-center">
-                        <div class="img-thumbnail" v-show="!show"
-                        style="width: 100%;height: 500px;">
-                        </div>
-                        <div class="img-thumbnail" v-show="show" style="">
-                            <img id='img' style="width: 100%;"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="file">上傳作品</label>
-                        <input type="file" @change="bindFile" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>作品名稱</label>
-                        <input v-model="photo.photoName" type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>作者姓名</label>
-                        <input v-model="photo.author" type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>作品描述</label>
-                        <textarea v-model="photo.desc" class="form-control" rows="8" cols="40"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>儲存在哪一本作品集？</label>
-                        <select class="form-control" v-model="photo.selected" >
-                            <option v-bind:value="0">選擇作品集</option>
-                            <option v-for="(project, name) in projects" v-bind:value="project.id">{{ project.name }}</option>
-                        </select>
-                    </div>
-                    <div class="form-group text-center">
-                        <input type="submit" class='btn btn-success btn-lg'
-                        style="width:45%;"
-                        v-on:click='onSubmit'
-                        value="上傳" />
-                        <button type="button" class='btn btn-danger btn-lg' style="width:45%;" >取消</button>
-                    </div>
-                    </form>
-                </div>
-                <div class="panel-footer" style="padding:10px;text-align:center;">
-                </div>
+            </div>
+            <div class="form-group">
+                <label for="file">上傳作品</label>
+                <input type="file" @change="bindFile" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>作品名稱</label>
+                <input v-model="photo.photoName" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>作者姓名</label>
+                <input v-model="photo.author" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>作品描述</label>
+                <textarea v-model="photo.desc" class="form-control" rows="8" cols="40"></textarea>
+            </div>
+            <div class="form-group">
+                <label>儲存在哪一本作品集？</label>
+                <select class="form-control" v-model="photo.selected" >
+                    <option v-bind:value="0">選擇作品集</option>
+                    <option v-for="(project, name) in projects" v-bind:value="project.id">{{ project.name }}</option>
+                </select>
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" class='btn btn-success btn-lg'
+                style="width:45%;"
+                v-on:click='onSubmit'
+                value="上傳" />
+                <button type="button" class='btn btn-danger btn-lg' style="width:45%;" >取消</button>
             </div>
         </form>
     </div>
-</div>
-</template>
+ </template>
 
 <script>
 

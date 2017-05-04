@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zhong
- * Date: 4/27/17
- * Time: 1:27 PM
- */
-
 namespace app\Repositories;
 
 use App\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectRepository
 {
@@ -24,11 +18,11 @@ class ProjectRepository
     }
 
 
-//    public function createDefaultProjectCover(int $id)
+//    public function createDefaultProjectCover()
 //    {
 //        $project = new Project;
 //        $project->name = '預設';
-//        $project->ownerID = $id;
+//        $project->ownerID = $this->userID;
 //        $project->thumPath = 'img/thum/1479129650.jpg';
 //        $project->save();
 //
@@ -41,7 +35,7 @@ class ProjectRepository
 //    {
 //        $project = new Project;
 //        $project->name = $request['name'];
-//        $project->ownerID = (int)$request['id'];
+//        $project->ownerID = $this->userID;
 //        $project->thumPath = 'img/thum/1479129650.jpg';
 //        $project->save();
 //    }
@@ -63,23 +57,23 @@ class ProjectRepository
 //            ->update(['thumPath' => $photoThumPath]);
 //    }
 //
-//    public function getUserLastProject(int $id)
+//    public function getUserLastProject()
 //    {
-//        $project = Project::where('ownerID', $id)
+//        $project = Project::where('ownerID', $this->userID)
 //            ->orderBy('id','desc')->first();
 //        return $project;
 //    }
+
+    public function getUserAllProjects()
+    {
+        $project = Project::where('ownerID', Auth::id())
+            ->orderBy('id', 'asc')->get();
+        return $project;
+    }
 //
-//    public function getUserAllProjects(int $id)
+//    public function getUserDefaultProjectID()
 //    {
-//        $project = Project::where('ownerID', $id)
-//            ->orderBy('id', 'asc')->get();
-//        return $project;
-//    }
-//
-//    public function getUserDefaultProjectID(int $id)
-//    {
-//        return Project::where('ownerID', $id)
+//        return Project::where('ownerID', $this->userID)
 //            ->where('name','預設')->value('id');
 //    }
 //

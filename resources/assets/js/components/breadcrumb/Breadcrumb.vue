@@ -40,7 +40,8 @@
             </div>
         </div>
         <div class="row">
-            <router-view :projectData="projectData"  v-on:pushOrPopBreadcrumb="checkActionTypeToAddOrRemove" ></router-view>
+            <router-view :userID="userID" v-on:pushOrPopBreadcrumb="checkActionTypeToAddOrRemove" ></router-view>
+            <!--<router-view :projectData="projectData"  v-on:pushOrPopBreadcrumb="checkActionTypeToAddOrRemove" ></router-view>-->
         </div>
     </div>
 </template>
@@ -58,13 +59,14 @@
                 projectName:'',
                 breadcrumb:[{"name":'Home','path':'/'}],
                 projectData:[
-                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
-                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
-                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-                    {name : 'world', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 }]
+//                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
+//                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
+//                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
+//                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
+//                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
+//                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
+//                    {name : 'world', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 }
+                    ]
             }
         },
         props:['userID'],

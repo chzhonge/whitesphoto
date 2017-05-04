@@ -36,7 +36,7 @@ import { router } from '../../app';
 
 export default {
   name: "Item",
-  props: ['itemData','selectedCollectionID'],
+  props: ['itemData','selectedProjectID'],
   data () {
     return {
       caption : false,
@@ -50,26 +50,18 @@ export default {
   },
   mounted () {},
     methods: {
-        changeStyle:function(width, height) {
-            // console.log('width:'+width);
-            // console.log('height:'+height);
-            return width > height ? "_layout-thumbnail_w" : "_layout-thumbnail_h";
-        },
         editProject:function(name) {
-            // console.log('this.selectedCollectionID '+this.selectedCollectionID);
-            // console.log('this.selectedCollectionID '+this.itemData.id);
-
-            if (this.selectedCollectionID != this.itemData.id
-                && this.selectedCollectionID != null ) {
+            if (this.selectedProjectID != this.itemData.id
+                && this.selectedProjectID != null ) {
                 return;
             }
 
-            if (this.itemData.name == '預設') {
-                this.checkIsDefaultValue = true;
-            }
-            else {
-                this.checkIsDefaultValue = false;
-            }
+//            if (this.itemData.name == '預設') {
+//                this.checkIsDefaultValue = true;
+//            }
+//            else {
+//                this.checkIsDefaultValue = false;
+//            }
 
             this.caption = !this.caption;
             this.backName = name;

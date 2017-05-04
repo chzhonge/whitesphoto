@@ -25,7 +25,7 @@ class Project extends Model
     protected $dates = ['deleted_at'];
 
     protected $attributes = [
-        'thumPath' => '',
+        'thumPath' => './img/thum/1479129650.jpg',
         'weight' =>0
     ];
 }

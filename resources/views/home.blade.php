@@ -37,6 +37,7 @@
         </div>
     @else
         <breadcrumb :user-i-d="{{ @Auth::id() }}"></breadcrumb>
+        <!--Vue.js 接收PHP的值 -->
     @endif
 @endsection
 
