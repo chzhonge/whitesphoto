@@ -32,77 +32,68 @@
 </template>
 
 <script>
-import { router } from '../../app';
-import { PROJECT_URL} from '../api';
+    import { router } from '../../app';
+    import { PROJECT_URL} from '../api';
 
-export default {
-  name: "Item",
-  props: ['itemData','selectedProjectID'],
-  data () {
-    return {
-      caption : false,
-      checkIsDefaultValue:false,
-      backName : '',
-      disable : false
-    }
-  },
-  computed: {
-
-  },
-  mounted () {},
-    methods: {
-        editItemInfo:function(name) {
-            if (this.selectedProjectID != this.itemData.id
-                && this.selectedProjectID != null ) {
-                return;
+    export default {
+        name: "Item",
+        props: ['itemData','selectedProjectID'],
+        data () {
+            return {
+                caption : false,
+                checkIsDefaultValue:false,
+                backName : '',
+                disable : false
             }
-
-//            if (this.itemData.name == '預設') {
-//                this.checkIsDefaultValue = true;
-//            }
-//            else {
-//                this.checkIsDefaultValue = false;
-//            }
-
-            this.caption = !this.caption;
-            this.backName = name;
-            this.$emit('editItemInfo', this.itemData.id);
         },
-        changeName:function() {
-            if (this.itemData.name != this.backName)
-            {
-                this.$http.put(active.api+'project/rename',this.itemData,active.headers).then((response) => {
-                    console.log('changeNameProject');
+        computed: {
+
+        },
+        mounted () {},
+        methods: {
+            editItemInfo:function(name) {
+                if (this.selectedProjectID != this.itemData.id && this.selectedProjectID != null ) {
+                    return;
+                }
+
+                this.caption = !this.caption;
+                this.backName = name;
+                this.$emit('editItemInfo', this.itemData.id);
+            },
+            changeItemName:function() {
+                if (this.itemData.name != this.backName) {
+                    this.$http.put(active.api+'project/rename',this.itemData,active.headers).then((response) => {
+                    console.log('changeItemNameProject');
                     this.$emit('changeCover');
-                }, (response) => {
+                    }, (response) => {
                     console.log(response);
-                });
-            }
-        },
-        cancel:function() {
-            this.itemData.name = this.backName;
-            this.caption = !this.caption;
-            this.$emit('editItemInfo',null);
-        },
-        finish:function() {
-            this.caption = !this.caption;
-            this.changeName();
-            this.$emit('editItemInfo',null);
-        },
-        changeCover:function() {
-            this.$emit('changeCover',this.itemData.id);
-        },
-        checkIsDefault:function() {
-            console.log(this.itemData.name);
-            return this.itemData.name == "預設" ? true : false;
-        },
-        testItemClick:function() {
-            console.log('id is here');
-            console.log(this.itemData.id);
-            // let cID = this.itemData.id;
-            router.push('/Collection/'+this.itemData.id);
-        },
-        deleteItem:function() {
+                    });
+                    }
+                    },
+                    cancel:function() {
+                    this.itemData.name = this.backName;
+                    this.caption = !this.caption;
+                    this.$emit('editItemInfo',null);
+            },
+            finish:function() {
+                this.caption = !this.caption;
+                this.changeItemName();
+                this.$emit('editItemInfo',null);
+            },
+            changeCover:function() {
+                this.$emit('changeCover',this.itemData.id);
+            },
+            checkIsDefault:function() {
+                console.log(this.itemData.name);
+                return this.itemData.name == "預設" ? true : false;
+            },
+            testItemClick:function() {
+                console.log('id is here');
+                console.log(this.itemData.id);
+                // let cID = this.itemData.id;
+                router.push('/Collection/'+this.itemData.id);
+            },
+            deleteItem:function() {
             let self = this;
             swal({
                     title: "你確定要刪除這本收藏集嗎?",
@@ -112,21 +103,20 @@ export default {
                     confirmButtonColor: "#DD6B55",
                     confirmButtonText: "沒錯，我要刪除!",
                     closeOnConfirm: false
-                },
-                function(){
+                 },
+                function() {
                     axios.delete(PROJECT_URL+'/'+self.itemData.id)
-                        .then(function (response) {
-                            swal("刪除成功！", "該收藏集已刪除", "success");
-                            self.$emit('itemStatusChange');
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                    .then(function (response) {
+                        swal("刪除成功！", "該收藏集已刪除", "success");
+                        self.$emit('itemStatusChange');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
                 });
-        }
-
-    },
-  components: {}
+            }
+         },
+        components: {}
 }
 </script>
 
