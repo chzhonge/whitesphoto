@@ -12,6 +12,7 @@
                   v-bind:selectedProjectID="selectedProjectID"
                   v-on:editItemInfo="lockThisProject"
                   v-on:changeCover="showChangeCoverMenu"
+                  v-on:itemStatusChange="reloadData"
             >
             </item>
         </div>
@@ -68,6 +69,9 @@
             updateCover:function() {
                 this.closeModal();
 //                this.$emit('updateCover');
+            },
+            reloadData:function () {
+                this.getAllProject();
             }
         },
         components: {

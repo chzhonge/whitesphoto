@@ -117,6 +117,7 @@ export default {
                     axios.delete(PROJECT_URL+'/'+self.itemData.id)
                         .then(function (response) {
                             swal("刪除成功！", "該收藏集已刪除", "success");
+                            self.$emit('itemStatusChange');
                         })
                         .catch(function (error) {
                             console.log(error);
