@@ -13,11 +13,13 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 import VueRouter from 'vue-router';
+import store from "./store/store";
+// import Vuex from 'vuex'
+
 
 Vue.use(VueRouter);
 
 Vue.component('breadcrumb', require('./components/breadcrumb/Breadcrumb.vue'));
-
 
 
 const routes = [
@@ -32,5 +34,6 @@ export const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
+    store,
     router
 });

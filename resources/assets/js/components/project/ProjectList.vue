@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <!--<div v-if="modal" class="overlay" v-on:click="closeModal"></div>-->
+            <div v-if="modal" class="overlay" v-on:click="closeModal"></div>
             <!--<div v-if="modal" class="modal-box">-->
                 <!--<Tab v-bind:selectedCollectionID="selectedCollectionID"-->
                      <!--v-on:cancelCover="closeModal" v-on:changeCover="updateCover">-->
@@ -10,7 +10,7 @@
             <item v-for="subProjectData in projectData"
                   v-bind:itemData="subProjectData"
                   v-bind:selectedProjectID="selectedProjectID"
-                  v-on:editItemInfo="lockThisProject"
+                  v-on:editItemInfo="focusOrCancelThisProject"
                   v-on:changeCover="showChangeCoverMenu"
                   v-on:itemStatusChange="reloadData"
             >
@@ -22,6 +22,8 @@
 <script>
     import Item from '../item/Item.vue';
     import { PROJECT_URL } from '../api';
+    import Vuex from 'vuex';
+//    import { mapGetters, mapActions , mapMutations } from 'vuex';
 
     export default {
         name: '',
@@ -30,20 +32,30 @@
             return {
                 modal:false,
                 selectedProjectID:null,
-                projectData:[]
+//                projectData:[]
             }
         },
-        computed: {
-
+        computed:{
+            ...Vuex.mapGetters(['projectData'])
         },
-        mounted () {
-            this.getAllProject();
+        mounted() {
+            this.getProjectData();
         },
         destroyed() {
 
         },
         methods: {
+            ...Vuex.mapActions(['getProjectData']),
+            closeModal:function() {
+                this.modal = false;
+                console.log('closeModal');
+            },
+            updateCover:function() {
+                this.closeModal();
+                this.getAllProject();
+            },
             getAllProject:function () {
+
                 let self = this;
                 axios.get(PROJECT_URL)
                     .then(function (response) {
@@ -58,17 +70,9 @@
                 console.log('showChangeCoverMenu');
                 this.selectedProjectID = projectID;
             },
-            closeModal:function() {
-                this.modal = false;
-                console.log('closeModal');
-            },
-            lockThisProject:function(projectID) {
+            focusOrCancelThisProject:function(projectID) {
                 this.selectedProjectID = projectID;
                 console.log('lockThisProject');
-            },
-            updateCover:function() {
-                this.closeModal();
-//                this.$emit('updateCover');
             },
             reloadData:function () {
                 this.getAllProject();

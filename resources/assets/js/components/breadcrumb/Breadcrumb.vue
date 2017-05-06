@@ -51,6 +51,7 @@
     const getAllProjectURL = 'http://localhost/whitesphoto/public/project';
 
     import { router } from '../../app';
+    import Vuex from 'vuex';
     export default {
         name: 'Breadcrumb',
         data () {
@@ -75,10 +76,12 @@
 
         },
         methods: {
+            ...Vuex.mapActions(['getProjectData']),
             showAddProjectNameBar:function() {
                 this.projectNameBarVisible = true;
             },
             createNewProject:function() {
+                let self = this;
                 this.projectNameBarVisible = false;
                 axios.post(createProjectURL, {
                     ownerID: this.userID,
@@ -86,6 +89,7 @@
                 })
                 .then(function (response) {
                     console.log(response);
+                    self.getProjectData();
                 })
                 .catch(function (error) {
                     console.log(error);
