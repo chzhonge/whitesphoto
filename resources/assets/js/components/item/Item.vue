@@ -34,6 +34,7 @@
 <script>
     import { router } from '../../app';
     import { PROJECT_URL} from '../api';
+    import Vuex from 'vuex';
 
     export default {
         name: "Item",
@@ -49,8 +50,14 @@
         computed: {
 
         },
-        mounted () {},
+        created () {
+
+        },
+        mounted () {
+
+        },
         methods: {
+            ...Vuex.mapActions(['getProjectData']),
             editItemInfo:function(name) {
                 if (this.selectedProjectID != this.itemData.id && this.selectedProjectID != null ) {
                     return;
@@ -78,7 +85,7 @@
                         axios.delete(PROJECT_URL+'/'+self.itemData.id)
                             .then(function (response) {
                                 swal("刪除成功！", "該收藏集已刪除", "success");
-                                self.$emit('itemStatusChange');
+                                self.getProjectData();
                             })
                             .catch(function (error) {
                                 console.log(error);
@@ -97,13 +104,15 @@
             },
             changeItemName:function() {
                 let self = this;
-                if (this.itemData.name != this.backName) {
-                    axios.put(PROJECT_URL, {
+                console.log(this.itemData.name +'  '+this.backName);
+                if (this.itemData.name !== this.backName) {
+                    console.log('gello');
+                    axios.put(PROJECT_URL+'/'+this.itemData.id, {
                         ownerID: this.userID,
-                        name: this.projectName
+                        name: this.itemData.name
                     })
                     .then(function (response) {
-
+                        console.log('成功');
                     })
                     .catch(function (error) {
                         console.log(error);

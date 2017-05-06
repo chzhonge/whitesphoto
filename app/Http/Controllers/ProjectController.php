@@ -76,7 +76,8 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->projectRepository->renameProject($request, $id);
+        return response()->json(['data' => '命名成功']);
     }
 
     /**

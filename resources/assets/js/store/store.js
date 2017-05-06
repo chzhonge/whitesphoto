@@ -77,5 +77,5 @@ export default new Vuex.Store( {
     getters,
     actions,
     mutations,
-    strict: true,//嚴格模式
+    strict: false,//嚴格模式
 });

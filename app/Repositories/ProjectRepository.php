@@ -40,11 +40,12 @@ class ProjectRepository
 //        $project->save();
 //    }
 //
-//    public function renameProject($request)
-//    {
-//        Project::where('id', $request['id'])
-//            ->update(['name' => $request['name']]);
-//    }
+    public function renameProject($request, $id)
+    {
+        Project::where('id', $id)
+            ->where('ownerID', Auth::id())
+            ->update(['name' => $request['name']]);
+    }
 //
     public function deleteProject(int $id)
     {
