@@ -33,8 +33,27 @@ const mutations = {
     images( state, value ) {
         state.images = value;
     },
-    selectedProjectName ( state, value ){
+    selectedProjectName ( state, value ) {
         state.selectedProjectName = value;
+    },
+    checkBreadCrumbLengthIsOne ( state ) {
+        return (Object.keys(state.breadcrumb).length === 1) ? true : false;
+    },
+    checkActionTypeToAddOrRemove( state ,{actionType, viewName, viewUrl} ){
+        if (actionType == 'push') {
+            state.breadcrumb.push({"name":viewName,"path":viewUrl});
+        } else {
+            state.breadcrumb.pop();
+        }
+    },
+    fillBreadCrumbClass:function ( state , index) {
+        if (this.checkBreadCrumbLengthIsOne()) {
+            return false;
+        }
+        if (Object.keys(state.breadcrumb).length-1 > index) {
+            return true;
+        }
+        return false;
     }
 };
 
@@ -82,7 +101,8 @@ const getters = {
     selectedProjectID: state => state.selectedProjectID,
     selectedProjectName: state => state.selectedProjectName,
     modal: state => state.modal,
-    images: state => state.images
+    images: state => state.images,
+    breadcrumb: state => state.breadcrumb
 };
 
 

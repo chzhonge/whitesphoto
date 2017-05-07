@@ -26,8 +26,8 @@ const routes = [
     { path: '/', component: require('./components/project/ProjectList.vue') },
     { path: '/example', component: require('./components/Example.vue') },
     { path: '/upload', component: require('./components/Upload.vue') },
-    { path: '/projects/:id', component: require('./components/img/ImageList.vue') },
-    { path: '/projects/:id/:imageID', component: require('./components/img/ImageInfo.vue') }
+    { path: '/projects/:id', component: require('./components/img/ImageList.vue')},
+    { path: '/projects/:id/:imageID', component: require('./components/img/ImageInfo.vue')}
 ];
 
 export const router = new VueRouter({

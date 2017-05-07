@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-        <div class="row">
-            <ol class="breadcrumb breadcrumb-zh">
-                <li v-for="(bread, index) in breadcrumb">
-                    <router-link v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }" :to="bread.path">{{ bread.name }}</router-link>
-                    <!--<a to=="/example" v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }">{{ bread.name }}</a>-->
-                </li>
-            </ol>
-        </div>
+        <!--<div class="row">-->
+            <!--<ol class="breadcrumb breadcrumb-zh">-->
+                <!--<li v-for="(bread, index) in breadcrumb">-->
+                    <!--<router-link v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }" :to="bread.path">{{ bread.name }}</router-link>-->
+                    <!--&lt;!&ndash;<a to=="/example" v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }">{{ bread.name }}</a>&ndash;&gt;-->
+                <!--</li>-->
+            <!--</ol>-->
+        <!--</div>-->
         <div class="row">
             <div class="col-md-12">
                 <form role="form" class="form-inline" style="margin-bottom: 20px;">
@@ -57,12 +57,11 @@
             return {
                 projectNameBarVisible:false,
                 projectName:'',
-//                breadcrumb:[{"name":'Home','path':'/'}]
+                breadcrumb:[{"name":'Home','path':'/'}]
             }
         },
         props:['userID'],
         computed: {
-            ...Vuex.mapGetters(['breadcrumb'])
         },
         mounted () {
 

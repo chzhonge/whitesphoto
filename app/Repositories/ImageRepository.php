@@ -80,7 +80,7 @@ class ImageRepository
     {
         $photo = Photo::where('projectID',$projectID)
             ->orderBy('id', 'asc')
-            ->lists('id');
+            ->pluck('id')->all();
         return $photo;
     }
 

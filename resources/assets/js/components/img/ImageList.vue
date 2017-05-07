@@ -1,7 +1,9 @@
 <template>
     <div class="container">
         <div class="row">
-            <image-item v-for="image in images" v-bind:image="image"></image-item>
+            <image-item v-for="image in images"
+
+                        v-bind:image="image"></image-item>
         </div>
     </div>
 </template>
@@ -24,8 +26,8 @@
             ...Vuex.mapGetters(['selectedProjectID','selectedProjectName'])
         },
         mounted () {
-            this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/'+this.selectedProjectID);
             this.getImagesData();
+            this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/'+this.selectedProjectID);
         },
         destroyed() {
             this.$emit('pushOrPopBreadcrumb', 'pop', this.selectedProjectName, '/projects/'+this.selectedProjectID);
@@ -38,6 +40,9 @@
                 }, (err) => {
                     console.log(err)
                 })
+            },
+            sendPath:function (actionType, viewName, viewUrl) {
+//                this.$emit('pushOrPopBreadcrumb', actionType, viewName, viewUrl);
             }
         },
         components: {

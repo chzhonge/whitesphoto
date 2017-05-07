@@ -24,94 +24,100 @@
         </div>
         <div class="row" >
             <div class="col-md-12">
-                <img
-                        class="img-responsive"
-                        v-for="image in imageData" v-bind:src="image.rawPath" alt="" />
+                <img class="img-responsive img-thumbnaii" v-for="image in imageData" v-bind:src="image.rawPath" alt="" />
             </div>
         </div>
-        <div class="row" v-if="edit" >
-            <div class="col-md-12 col-sm-2">
-                <form role="form">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading text-center">
-                            <strong>編輯作品</strong>
-                        </div>
-                        <div class="panel-body">
-                            <form role="form">
-                                <div class="form-group">
-                                    <label>作品名稱</label>
-                                    <input v-model="image.title" type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>作者姓名</label>
-                                    <input v-model="image.author" type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>作品描述</label>
-                                    <textarea v-model="image.desc" class="form-control" rows="8" cols="40"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>儲存在哪一本作品集？</label>
-                                    <select class="form-control" v-model="image.selected" >
-                                        <option v-bind:value="0">選擇作品集</option>
-                                        <option v-for="(project, name) in projects" v-bind:value="project.id">{{ project.name }}</option>
-                                    </select>
-                                </div>
-                                <div class="form-group text-center">
-                                    <button type="button" class='btn btn-primary btn-lg'
-                                            style="width:45%;"
-                                            v-on:click="updatePhoto"
-                                    >確定</button>
-                                    <button type="button" class='btn btn-default btn-lg'
-                                            style="width:45%;"
-                                            v-on:click='cancelPhoto'
-                                    >取消</button>
-                                </div>
-                                <div class="form-group text-center">
-                                    <button type="button" class='btn btn-danger btn-lg btn-block'
-                                            v-on:click="deletePhotoWarning"
-                                    >刪除</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="panel-footer" style="padding:10px;text-align:center;">
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="row" v-if="!edit">
-            <div class="col-md-3">
-                <div v-for="image in imageData" >
-                    <div v-if="!edit">
-                        <div>
-                            {{image.updated_at}}</h1>
-                        </div>
-                        <div>
-                            <h1>{{image.title}}</h1>
-                        </div>
-                        <div>
-                            {{image.author}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div v-for="image in imageData" >
-                    <div v-if="!edit">
-                        <p>
-                            {{image.desc}}
-                        </p>
+
+        <div class="panel" v-if="edit">
+            <div class="panel-body">
+                <div class="row"  >
+                    <div class="col-md-12">
+                        <form role="form">
+                            <div class="form-group">
+                                <label>作品名稱</label>
+                                <input v-model="image.title" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>作者姓名</label>
+                                <input v-model="image.author" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>作品描述</label>
+                                <textarea v-model="image.desc" class="form-control" rows="8" cols="40"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>儲存在哪一本作品集？</label>
+                                <select class="form-control" v-model="image.selected" >
+                                    <option v-bind:value="0">選擇作品集</option>
+                                    <option v-for="(project, name) in projects" v-bind:value="project.id">{{ project.name }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="button" class='btn btn-primary btn-lg'
+                                        style="width:45%;"
+                                        v-on:click="updatePhoto"
+                                >確定</button>
+                                <button type="button" class='btn btn-default btn-lg'
+                                        style="width:45%;"
+                                        v-on:click='cancelPhoto'
+                                >取消</button>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="button" class='btn btn-danger btn-lg btn-block'
+                                        v-on:click="deletePhotoWarning"
+                                >刪除</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media" v-if="!edit" >
+                    {{ image.updated_at }}
+                    <div class="media-body">
+                        <h4 class="media-heading">{{ image.title }} by {{ image.author }}</h4>
+                        {{ image.desc }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row" v-if="!edit">-->
+            <!--<div class="col-md-3">-->
+                <!--<div v-for="image in imageData" >-->
+                    <!--<div v-if="!edit">-->
+                        <!--<div>-->
+                            <!--{{image.updated_at}}</h1>-->
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--<h1>{{image.title}}</h1>-->
+                        <!--</div>-->
+                        <!--<div>-->
+                            <!--{{image.author}}-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-6">-->
+                <!--<div v-for="image in imageData" >-->
+                    <!--<div v-if="!edit">-->
+                        <!--<p>-->
+                            <!--{{image.desc}}-->
+                        <!--</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 
 <script>
     import { router } from '../../app';
-    import { IMAGE_URL } from '../api';
+    import { IMAGE_URL , PROJECT_URL } from '../api';
     import Vuex from 'vuex';
 
     export default {
@@ -157,9 +163,11 @@
             getProjectID:function() {
                 let self = this;
                 this.projectID = this.imageData[0].projectID;
-                axios.get(IMAGE_URL+'/'+projectID+'/ids').then((response) => {
+                axios.get(IMAGE_URL+'/'+this.projectID+'/ids').then((response) => {
                     self.imageIDList = response.data.result;
-                    self.selected = self.imageIDList.indexOf(imageIDList.imageData[0].id);
+                    console.log('he');
+                    console.log(self.imageIDList);
+                    self.selected = self.imageIDList.indexOf(self.imageData[0].id);
                     if (self.selected === -1 || self.selected === 0) {
                         self.prevAble = false;
                     }
