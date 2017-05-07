@@ -31,7 +31,7 @@
                 </select>
             </div>
             <div class="form-group text-center">
-                <input type="submit" class='btn btn-success btn-lg'
+                <input type="button" class='btn btn-success btn-lg'
                 style="width:45%;"
                 v-on:click='onSubmit'
                 value="上傳" />
@@ -42,78 +42,87 @@
  </template>
 
 <script>
+    import { PROJECT_URL, IMAGE_URL } from './api';
 
-export default {
-    data () {
-        return  {
-            show : false,
-            photo : {
-            photoName : '',
-            author : '',
-            desc :'',
-            selected : 0,
-            ownerID : ''
-            },
-            f_photo : new FormData(),
-            projects : null,
-        }
-    },
-    computed: {
-
-    },
-    mounted () {
-    //    this.getProjectsList();
-        this.$emit('pushOrPopBreadcrumb', 'push', '上傳', '/upload');
-    },
-    destroyed() {
-        this.$emit('pushOrPopBreadcrumb', 'pop', '上傳', '/upload');
-    },
-    methods: {
-    getProjectsList:function() {
-        this.$http.get(active.api+'project/all/'+active.id).then((response) => {
-        this.projects=response.body.result;
-        }, (response) => {
-
-        });
-    },
-    bindFile: function(e) {
-        // 附加image
-        this.f_photo.append('image', e.target.files[0]);
-
-        // 上傳時顯示縮圖
-        var input = e.target;
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById("img").src = e.target.result;
+    export default {
+        data () {
+            return  {
+                show : false,
+                photo : {
+                photoName : '',
+                author : '',
+                desc :'',
+                selected : 0,
+                ownerID : ''
+                },
+                f_photo : new FormData(),
+                projects : null,
             }
-            reader.readAsDataURL(input.files[0]);
-        }
-        this.show = true;
+        },
+        computed: {
 
-    },
-    onSubmit: function(e) {
-        console.log('submit');
-        // var header = {headers: {'X-CSRF-TOKEN': document.getElementById('token').getAttribute("content")}};
+        },
+        mounted () {
+            this.getProjectsList();
+            this.$emit('pushOrPopBreadcrumb', 'push', '上傳', '/upload');
+        },
+        destroyed() {
+            this.$emit('pushOrPopBreadcrumb', 'pop', '上傳', '/upload');
+        },
+        methods: {
+        getProjectsList:function() {
+            let self = this;
+            axios.get(PROJECT_URL)
+                .then(function (response) {
+                    self.projects = response.data.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        bindFile: function(e) {
+            // 附加image
+            this.f_photo.append('image', e.target.files[0]);
 
-        if(this.f_photo.image==undefined) {
-            this.f_photo.append('image', '');
-        }
-        this.f_photo.append('photoName',this.photo.photoName);
-        this.f_photo.append('author',this.photo.author);
-        this.f_photo.append('desc',this.photo.desc);
-        this.f_photo.append('selected',this.photo.selected);
-        this.f_photo.append('ownerID',this.photo.ownerID);
+            // 上傳時顯示縮圖
+            var input = e.target;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("img").src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            this.show = true;
 
-        this.$http.post(active.api+'photo/create', this.f_photo, active.headers)
-        .then((response) => {
-            console.log(response.body);
-        }, (response) => {
+        },
+        onSubmit: function(e) {
+            console.log('submit');
 
-        });
-        }
-    },
-}
+            if(this.f_photo.image==undefined) {
+                this.f_photo.append('image', '');
+            }
+            this.f_photo.append('photoName',this.photo.photoName);
+            this.f_photo.append('author',this.photo.author);
+            this.f_photo.append('desc',this.photo.desc);
+            this.f_photo.append('selected',this.photo.selected);
+            this.f_photo.append('ownerID',this.photo.ownerID);
+
+            let self = this;
+            axios.post(IMAGE_URL, this.f_photo)
+                .then(function (response) {
+                    if (response.data.result === true) {
+                        swal("上傳圖片成功!", '', "success");
+                    } else {
+                        swal("上傳圖片失敗!", '', "error");
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+        },
+    }
 </script>
 
 <style lang="css">

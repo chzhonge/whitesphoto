@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('project', 'ProjectController');
-
+    Route::resource('image', 'ImageController');
 });
 
 

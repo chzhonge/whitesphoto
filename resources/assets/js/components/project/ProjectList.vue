@@ -2,11 +2,11 @@
     <div class="container">
         <div class="row">
             <div v-if="modal" class="overlay" v-on:click="closeModal"></div>
-            <!--<div v-if="modal" class="modal-box">-->
-                <!--<Tab v-bind:selectedCollectionID="selectedCollectionID"-->
-                     <!--v-on:cancelCover="closeModal" v-on:changeCover="updateCover">-->
-                <!--</Tab>-->
-            <!--</div>-->
+            <div v-if="modal" class="modal-box">
+                <Tab v-bind:selectedCollectionID="selectedCollectionID"
+                     v-on:cancelCover="closeModal" v-on:changeCover="updateCover">
+                </Tab>
+            </div>
             <item v-for="subProjectData in projectData"
                   v-bind:itemData="subProjectData"
                   v-bind:selectedProjectID="selectedProjectID"
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    import Tab from '../Tab.vue';
     import Item from '../item/Item.vue';
     import { PROJECT_URL } from '../api';
     import Vuex from 'vuex';
@@ -79,7 +80,8 @@
             }
         },
         components: {
-            Item
+            Item,
+            Tab
         },
     }
 </script>

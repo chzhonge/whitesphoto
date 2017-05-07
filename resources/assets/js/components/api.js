@@ -1,2 +1,3 @@
 const PROJECT_URL = './project';
-export {PROJECT_URL};
+const IMAGE_URL = './image';
+export {PROJECT_URL, IMAGE_URL};
