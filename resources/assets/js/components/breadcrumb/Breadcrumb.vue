@@ -57,11 +57,13 @@
             return {
                 projectNameBarVisible:false,
                 projectName:'',
-                breadcrumb:[{"name":'Home','path':'/'}]
+//                breadcrumb:[{"name":'Home','path':'/'}]
             }
         },
         props:['userID'],
-        computed: {},
+        computed: {
+            ...Vuex.mapGetters(['breadcrumb'])
+        },
         mounted () {
 
         },

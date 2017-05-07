@@ -1,18 +1,35 @@
 <template>
     <div class="container">
         <div class="row">
-            <div v-if="modal" class="overlay" v-on:click="closeModal"></div>
-            <div v-if="modal" class="modal-box">
-                <Tab v-bind:selectedCollectionID="selectedCollectionID"
-                     v-on:cancelCover="closeModal" v-on:changeCover="updateCover">
-                </Tab>
+            <div v-if="modal" class="overlay" v-on:click="closeModelMenu"></div>
+            <div v-if="modal" class="modal-box tab-list">
+                <!--<div>-->
+                    <!--<ul class="nav nav-tabs">-->
+                        <!--<li><a>選項一</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <div class="row">
+                    <tab v-for="image in images"
+                         v-bind:imageData="image"
+                         v-bind:selectedCover="selectedCover"
+                         v-bind:selectedProjectID="selectedProjectID"
+                         v-on:focusThis="focusThis"
+                    >
+                    </tab>
+                </div>
+                <div class="form-group text-center clear-line-height">
+                    <button type="button" class='btn btn-success btn-lg'
+                            style="width:49%;" v-on:click="changeProjectCover"
+                    >確定</button>
+                    <button type="button" class='btn btn-danger btn-lg'
+                            style="width:49%;" v-on:click="closeModelMenu"
+
+                    >取消</button>
+                </div>
             </div>
             <item v-for="subProjectData in projectData"
                   v-bind:itemData="subProjectData"
                   v-bind:selectedProjectID="selectedProjectID"
-                  v-on:editItemInfo="focusOrCancelThisProject"
-                  v-on:showChangeCover="showChangeCoverMenu"
-                  v-on:itemStatusChange="reloadData"
             >
             </item>
         </div>
@@ -20,23 +37,21 @@
 </template>
 
 <script>
-    import Tab from '../Tab.vue';
+    import Tab from '../tab/v2/Tab.vue';
     import Item from '../item/Item.vue';
     import { PROJECT_URL } from '../api';
     import Vuex from 'vuex';
-//    import { mapGetters, mapActions , mapMutations } from 'vuex';
 
     export default {
         name: '',
         props:['userID'],
         data () {
             return {
-                modal:false
-//                projectData:[]
+                selectedCover:null
             }
         },
         computed:{
-            ...Vuex.mapGetters(['projectData','selectedProjectID'])
+            ...Vuex.mapGetters(['projectData','selectedProjectID','modal','images'])
         },
         mounted() {
             this.getProjectData();
@@ -47,37 +62,30 @@
         methods: {
             ...Vuex.mapActions(['getProjectData']),
             ...Vuex.mapMutations(['selectedProjectID']),
-            closeModal:function() {
-                this.modal = false;
-                console.log('closeModal');
+            closeModelMenu:function() {
+                this.$store.commit('modal' , false);
+            },
+            changeProjectCover:function () {
+                let self = this;
+                axios.post(PROJECT_URL+'/updateCover',{
+                    imageID : this.selectedCover,
+                    projectID : this.selectedProjectID
+                }).then((response) => {
+                    self.closeModelMenu();
+                    self.getProjectData();
+                    swal("封面更改成功！", "", "success");
+                }, (err) => {
+                    console.log(err)
+                })
             },
             updateCover:function() {
                 this.closeModal();
-                this.getAllProject();
+                this.getProjectData();
             },
-            getAllProject:function () {
-
-                let self = this;
-                axios.get(PROJECT_URL)
-                    .then(function (response) {
-                        self.projectData = response.data.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
-            showChangeCoverMenu:function(projectID) {
-                this.modal = true;
-                this.selectedProjectID = projectID;
-                console.log('showChangeCoverMenu');
-            },
-            focusOrCancelThisProject:function(projectID) {
-                this.selectedProjectID = projectID;
-                console.log('lockThisProject');
-            },
-            reloadData:function () {
-                this.getAllProject();
+            focusThis:function (id) {
+                this.selectedCover = id;
             }
+
         },
         components: {
             Item,
@@ -104,13 +112,16 @@
         line-height: 200px;
         position: fixed;
         top: 25%;
-        left: 25%;
+        left: 13%;
         margin-top: -100px;
-        margin-left: -150px;
         background-color: #ffffff;
         border-radius: 10px;
         border: 5px solid #CCE2FF;
         text-align: center;
         z-index: 11; /* 1px higher than the overlay layer */
+    }
+    .tab-list {
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
 </style>

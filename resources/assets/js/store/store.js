@@ -7,7 +7,10 @@ Vue.use(Vuex);
 const state = {
     showLoading : false,
     selectedProjectID : null,
+    selectedProjectName : null,
+    modal : false,
     projectData : [],
+    images:[],
     breadcrumb : [{"name":'Home','path':'/'}]
 };
 
@@ -23,6 +26,15 @@ const mutations = {
     },
     selectedProjectID( state, value ) {
         state.selectedProjectID = value;
+    },
+    modal( state, value ) {
+        state.modal = value;
+    },
+    images( state, value ) {
+        state.images = value;
+    },
+    selectedProjectName ( state, value ){
+        state.selectedProjectName = value;
     }
 };
 
@@ -42,7 +54,6 @@ const actions = {
     },
     getProjectData( {commit} ) {
         axios.get(PROJECT_URL).then((response) => {
-            console.log(response.data);
             commit( 'projectData', response.data.data);
         }, (err) => {
             console.log(err)
@@ -50,6 +61,13 @@ const actions = {
     },
     createNewProject( {commit}) {
         this.getProjectData(commit);
+    },
+    getImagesData( {commit} , id ) {
+        axios.get(PROJECT_URL+'/'+id).then((response) => {
+            commit( 'images', response.data.data);
+        }, (err) => {
+            console.log(err)
+        })
     }
 };
 
@@ -61,7 +79,10 @@ const actions = {
 const getters = {
     showLoading: state => state.showLoading,
     projectData: state => state.projectData,
-    selectedProjectID: state => state.selectedProjectID
+    selectedProjectID: state => state.selectedProjectID,
+    selectedProjectName: state => state.selectedProjectName,
+    modal: state => state.modal,
+    images: state => state.images
 };
 
 

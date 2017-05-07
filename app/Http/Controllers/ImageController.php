@@ -15,6 +15,28 @@ class ImageController extends Controller
         $this->imageRepository = $imageRepository;
     }
 
+    public function index($id)
+    {
+        return response()->json([
+            'state' => 'getCoverPreviewList'
+            ,'data' => $this->imageRepository->getThisProjectAllPhoto($id)]);
+    }
+
+    public function getImgIDList($id)
+    {
+        return response()->json([
+            'state' => 'getPhotoIDList'
+            ,'result' => $this->imageRepository->getPhotoIDList($id)]);
+    }
+
+
+    public function getInfo($id)
+    {
+        return response()->json([
+            'state' => 'getThisPhotoInfo'
+            ,'result' => $this->imageRepository->getThisPhotoInfo($id)]);
+    }
+
     public function store(Request $request)
     {
         $messages = [
@@ -82,9 +104,12 @@ class ImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-
+        $this->imageRepository->updatePhoto($request);
+        return response()->json([
+            'state' => 'updatePhoto'
+            ,'result' => true ]);
     }
 
     /**
@@ -95,6 +120,9 @@ class ImageController extends Controller
      */
     public function destroy($id)
     {
-
+        $this->imageRepository->deletePhoto($id);
+        return response()->json([
+            'state' => 'destroyPhoto'
+            ,'result' => true ]);
     }
 }

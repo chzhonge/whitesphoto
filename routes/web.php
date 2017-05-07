@@ -23,6 +23,9 @@ Route::get('/', function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('project', 'ProjectController');
     Route::resource('image', 'ImageController');
+    Route::post('project/updateCover', 'ProjectController@updateCover');
+    Route::get('image/{id}/ids', 'ImageController@getImgIDList');
+    Route::get('image/info/{id}', 'ImageController@getInfo');
 });
 
 

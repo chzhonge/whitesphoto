@@ -1,8 +1,7 @@
 <template lang="html">
     <div v-bind:data-id="itemData.id" class="col-md-3 height-limit" >
-        <div>
             <a class="flex-center"  >
-                <div v-on:click="testItemClick" >
+                <div v-on:click="entryPhoto" >
                     <img v-bind:src="itemData.thumPath" v-bind:data-name="itemData.name" class="img-responsive img-thumbnail">
                 </div>
             </a>
@@ -12,7 +11,7 @@
                 </h3>
                 <div v-show="caption">
                     <div class="form-group" >
-                        <h3>{{ itemData.name }}</h3>
+                        <h3 class="text-center">{{ itemData.name }}</h3>
                     </div>
                     <div class="form-group" >
                         <input  type="text" class='form-control text-center input-sm' v-model="itemData.name">
@@ -27,7 +26,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </template>
 
@@ -38,7 +36,7 @@
 
     export default {
         name: "Item",
-        props: ['itemData','selectedProjectID'],
+        props: ['itemData'],
         data () {
             return {
                 caption : false,
@@ -48,7 +46,7 @@
             }
         },
         computed: {
-
+            ...Vuex.mapGetters(['selectedProjectID'])
         },
         created () {
 
@@ -57,7 +55,8 @@
 
         },
         methods: {
-            ...Vuex.mapActions(['getProjectData']),
+            ...Vuex.mapMutations(['selectedProjectID','model','selectedProjectName']),
+            ...Vuex.mapActions(['getProjectData','getImagesData']),
             editItemInfo:function(name) {
                 if (this.selectedProjectID != this.itemData.id && this.selectedProjectID != null ) {
                     return;
@@ -65,10 +64,12 @@
 
                 this.caption = !this.caption;
                 this.backName = name;
-                this.$emit('editItemInfo', this.itemData.id);
+                this.$store.commit('selectedProjectID' , this.itemData.id);
+                this.$store.dispatch('getImagesData' , this.itemData.id);
             },
             showChangeCover:function() {
-                this.$emit('showChangeCover',this.itemData.id);
+                this.$store.commit('selectedProjectID' , this.itemData.id);
+                this.$store.commit('modal' , true);
             },
             deleteItem:function() {
                 let self = this;
@@ -95,12 +96,12 @@
             finish:function() {
                 this.caption = !this.caption;
                 this.changeItemName();
-                this.$emit('editItemInfo',null);
+                this.$store.commit('selectedProjectID' , null)
             },
             cancel:function() {
                 this.itemData.name = this.backName;
                 this.caption = !this.caption;
-                this.$emit('editItemInfo',null);
+                this.$store.commit('selectedProjectID' , null)
             },
             changeItemName:function() {
                 let self = this;
@@ -119,10 +120,11 @@
                     });
                 }
             },
-            testItemClick:function() {
-                console.log('id is here');
+            entryPhoto:function() {
+                this.$store.commit('selectedProjectName' , this.itemData.name);
+                this.$store.commit('selectedProjectID' , this.itemData.id);
                 console.log(this.itemData.id);
-                router.push('/Collection/'+this.itemData.id);
+                router.push('/projects/'+this.itemData.id);
             }
          },
         components: {}
@@ -138,18 +140,19 @@
 }
 
 .height-limit{
-    height: 340px ;
+    height: 395px ;
 }
 
 .btn-half-zh {
     width: 49%;
 }
 
+
 .caption {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 
 </style>

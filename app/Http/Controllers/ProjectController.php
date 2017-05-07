@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\ProjectRepository;
+use App\Repositories\ImageRepository;
 
 class ProjectController extends Controller
 {
@@ -12,6 +13,16 @@ class ProjectController extends Controller
     public function __construct(ProjectRepository $projectRepository)
     {
         $this->projectRepository = $projectRepository;
+    }
+
+    public function validatorCheck(array $data, array $rule)
+    {
+        //Validator $validator
+        $messages = [
+            'unique' => 'The :attribute already registered.'
+        ];
+        $validator = Validator::make($data, $rule);
+        return $validator;
     }
 
     /**
@@ -53,7 +64,7 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(['data' => $this->projectRepository->getThisProjectAllImage($id)]);
     }
 
     /**
@@ -79,6 +90,21 @@ class ProjectController extends Controller
         $this->projectRepository->renameProject($request, $id);
         return response()->json(['data' => '命名成功']);
     }
+
+    public function updateCover(Request $request)
+    {
+        $data = $request->all();
+
+        $imageRepository = new ImageRepository;
+        $photoThumPath = $imageRepository->getCoverThumPath($data['imageID']);
+
+
+        $this->projectRepository->updateProjectCover($data['projectID'], $photoThumPath);
+        return response()->json([
+            'state' => 'updateProjectCover'
+            ,'result' => true]);
+    }
+
 
     /**
      * Remove the specified resource from storage.
