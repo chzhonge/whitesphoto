@@ -47,27 +47,17 @@
 </template>
 
 <script>
-    const createProjectURL = 'http://localhost/whitesphoto/public/project';
-    const getAllProjectURL = 'http://localhost/whitesphoto/public/project';
-
     import { router } from '../../app';
+    import { PROJECT_URL } from '../api';
     import Vuex from 'vuex';
+
     export default {
         name: 'Breadcrumb',
         data () {
             return {
                 projectNameBarVisible:false,
                 projectName:'',
-                breadcrumb:[{"name":'Home','path':'/'}],
-                projectData:[
-//                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-//                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-//                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
-//                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
-//                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-//                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-//                    {name : 'world', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 }
-                    ]
+                breadcrumb:[{"name":'Home','path':'/'}]
             }
         },
         props:['userID'],
@@ -83,7 +73,7 @@
             createNewProject:function() {
                 let self = this;
                 this.projectNameBarVisible = false;
-                axios.post(createProjectURL, {
+                axios.post(PROJECT_URL, {
                     ownerID: this.userID,
                     name: this.projectName
                 })

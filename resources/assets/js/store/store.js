@@ -6,6 +6,7 @@ Vue.use(Vuex);
 
 const state = {
     showLoading : false,
+    selectedProjectID : null,
     projectData : [],
     breadcrumb : [{"name":'Home','path':'/'}]
 };
@@ -19,6 +20,9 @@ const mutations = {
     },
     projectData( state, value ) {
         state.projectData = value;
+    },
+    selectedProjectID( state, value ) {
+        state.selectedProjectID = value;
     }
 };
 
@@ -56,7 +60,8 @@ const actions = {
  */
 const getters = {
     showLoading: state => state.showLoading,
-    projectData: state => state.projectData
+    projectData: state => state.projectData,
+    selectedProjectID: state => state.selectedProjectID
 };
 
 

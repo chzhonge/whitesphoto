@@ -23361,8 +23361,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(9);
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 //
 //
 //
@@ -23423,22 +23421,13 @@ const getAllProjectURL = 'http://localhost/whitesphoto/public/project';
         return {
             projectNameBarVisible: false,
             projectName: '',
-            breadcrumb: [{ "name": 'Home', 'path': '/' }],
-            projectData: [
-                //                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-                //                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-                //                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
-                //                    {name : 'hello', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 },
-                //                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-                //                    {name : 'hello', thumPath : './img/thum/1479145252.jpg', width : 300 , height : 160 },
-                //                    {name : 'world', thumPath : './img/thum/1479129650.jpg', width : 167 , height : 200 }
-            ]
+            breadcrumb: [{ "name": 'Home', 'path': '/' }]
         };
     },
     props: ['userID'],
     computed: {},
     mounted() {},
-    methods: _extends({}, __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].mapActions(['getProjectData']), {
+    methods: {
         showAddProjectNameBar: function () {
             this.projectNameBarVisible = true;
         },
@@ -23481,7 +23470,7 @@ const getAllProjectURL = 'http://localhost/whitesphoto/public/project';
             __WEBPACK_IMPORTED_MODULE_0__app__["router"].push({ path: '/upload' });
         }
 
-    }),
+    },
     components: {}
 });
 

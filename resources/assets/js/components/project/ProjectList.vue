@@ -11,7 +11,7 @@
                   v-bind:itemData="subProjectData"
                   v-bind:selectedProjectID="selectedProjectID"
                   v-on:editItemInfo="focusOrCancelThisProject"
-                  v-on:changeCover="showChangeCoverMenu"
+                  v-on:showChangeCover="showChangeCoverMenu"
                   v-on:itemStatusChange="reloadData"
             >
             </item>
@@ -31,13 +31,12 @@
         props:['userID'],
         data () {
             return {
-                modal:false,
-                selectedProjectID:null,
+                modal:false
 //                projectData:[]
             }
         },
         computed:{
-            ...Vuex.mapGetters(['projectData'])
+            ...Vuex.mapGetters(['projectData','selectedProjectID'])
         },
         mounted() {
             this.getProjectData();
@@ -47,6 +46,7 @@
         },
         methods: {
             ...Vuex.mapActions(['getProjectData']),
+            ...Vuex.mapMutations(['selectedProjectID']),
             closeModal:function() {
                 this.modal = false;
                 console.log('closeModal');
@@ -68,8 +68,8 @@
             },
             showChangeCoverMenu:function(projectID) {
                 this.modal = true;
-                console.log('showChangeCoverMenu');
                 this.selectedProjectID = projectID;
+                console.log('showChangeCoverMenu');
             },
             focusOrCancelThisProject:function(projectID) {
                 this.selectedProjectID = projectID;

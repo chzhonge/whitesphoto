@@ -18,7 +18,7 @@
                         <input  type="text" class='form-control text-center input-sm' v-model="itemData.name">
                     </div>
                     <div class="form-group">
-                        <button type="button" v-on:click="changeCover" class='btn btn-info btn-xs'>更改收藏集封面</button>
+                        <button type="button" v-on:click="showChangeCover" class='btn btn-info btn-xs'>更改收藏集封面</button>
                         <button type="button" v-on:click="deleteItem" class='btn btn-danger btn-xs'>刪除這本收藏集</button>
                     </div>
                     <div class="form-group">
@@ -67,8 +67,8 @@
                 this.backName = name;
                 this.$emit('editItemInfo', this.itemData.id);
             },
-            changeCover:function() {
-                this.$emit('changeCover',this.itemData.id);
+            showChangeCover:function() {
+                this.$emit('showChangeCover',this.itemData.id);
             },
             deleteItem:function() {
                 let self = this;
