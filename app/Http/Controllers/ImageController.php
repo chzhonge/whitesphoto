@@ -104,9 +104,9 @@ class ImageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, int $id)
     {
-        $this->imageRepository->updatePhoto($request);
+        $this->imageRepository->updatePhoto($request, $id);
         return response()->json([
             'state' => 'updatePhoto'
             ,'result' => true ]);

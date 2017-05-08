@@ -27,12 +27,27 @@
         },
         mounted () {
             this.getImagesData();
-            this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/'+this.selectedProjectID);
+            this.pushPath();
+//            this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/'+this.selectedProjectID);
         },
         destroyed() {
-            this.$emit('pushOrPopBreadcrumb', 'pop', this.selectedProjectName, '/projects/'+this.selectedProjectID);
+            this.popPath();
+//            this.$emit('pushOrPopBreadcrumb', 'pop', this.selectedProjectName, '/projects/'+this.selectedProjectID);
         },
         methods: {
+            ...Vuex.mapMutations(['breadcrumb']),
+            pushPath:function () {
+                let viewName = this.selectedProjectName;
+                let action ='push';
+                let viewUrl ='/projects/'+this.selectedProjectID;
+                this.$store.commit('breadcrumb' , {viewName,action,viewUrl});
+            },
+            popPath:function () {
+                let viewName = this.selectedProjectName;
+                let action = 'pop';
+                let viewUrl = '/projects/'+this.selectedProjectID;
+                this.$store.commit('breadcrumb' , {viewName,action,viewUrl});
+            },
             getImagesData:function () {
                 let self = this;
                 axios.get(PROJECT_URL+'/'+this.selectedProjectID).then((response) => {
@@ -40,9 +55,6 @@
                 }, (err) => {
                     console.log(err)
                 })
-            },
-            sendPath:function (actionType, viewName, viewUrl) {
-//                this.$emit('pushOrPopBreadcrumb', actionType, viewName, viewUrl);
             }
         },
         components: {

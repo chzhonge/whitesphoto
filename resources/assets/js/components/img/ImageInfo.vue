@@ -138,16 +138,26 @@
             }
         },
         computed: {
-
+            ...Vuex.mapGetters(['breadcrumb','selectedProjectID','selectedProjectName'])
         },
         mounted () {
             this.getThisPhoto();
-
+            this.updateBreadcrumb();
         },
         destroyed() {
 
         },
         methods: {
+//            ...Vuex.mapMutations(['breadcrumb']),
+            updateBreadcrumb:function () {
+                let _selectedProjectID = this.selectedProjectID;
+                let _selectedProjectName = this.selectedProjectName;
+                let _imageID = this.$route.params.imageID;
+                let type = 'push';
+                let path ='/projects/'+_selectedProjectID+'/'+_imageID;
+                this.$store.commit('breadcrumb' , { _selectedProjectName , type , path});
+//                this.breadcrumb({ _selectedProjectName , type , path});
+            },
             getThisPhoto:function() {
                 let imageID =this.$route.params.imageID;
                 let self = this;
@@ -187,7 +197,7 @@
                 })
             },
             backProject:function() {
-                router.push('/projects/'+this.imageData[0].projectID);
+                router.push('/projects/'+this.selectedProjectID);
             },
             nextPhoto:function() {
                 router.push('/projects/'+this.imageData[0].projectID
@@ -214,20 +224,12 @@
             },
             updatePhoto:function() {
                 let self = this;
-                axios.put(IMAGE_URL,this.image).then((response) => {
+                axios.put(IMAGE_URL+'/'+this.image.id,this.image).then((response) => {
                     self.projects = response.data.data;
                     self.getThisPhoto();
                     self.edit = false;
                 }, (err) => {
                     console.log(err)
-                })
-                this.$http.put(active.api+'photo/update',this.photo,active.headers).then((response) => {
-                    // this.$emit('changeCover');
-                    console.log('updatePhoto');
-                    this.getThisPhoto();
-                    this.edit = false;
-                }, (response) => {
-                    console.log(response);
                 });
             },
             deletePhotoWarning:function() {

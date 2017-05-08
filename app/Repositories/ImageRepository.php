@@ -95,9 +95,9 @@ class ImageRepository
         Photo::where('id', $photoID)->delete();
     }
 
-    public function updatePhoto(Request $request)
+    public function updatePhoto(Request $request, $id)
     {
-        Photo::where('id', $request->id)
+        Photo::where('id', $id)
             ->update(['title' => $request->title,
                 'author' => $request->author ,
                 'desc' => $request->desc ,

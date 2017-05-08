@@ -23110,6 +23110,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(6);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 //
 //
 //
@@ -23153,6 +23156,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -23177,12 +23181,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {},
     mounted() {
         this.getProjectsList();
-        this.$emit('pushOrPopBreadcrumb', 'push', '上傳', '/upload');
+        this.pushPath();
+        //            this.$emit('pushOrPopBreadcrumb', 'push', '上傳', '/upload');
     },
     destroyed() {
-        this.$emit('pushOrPopBreadcrumb', 'pop', '上傳', '/upload');
+        this.popPath();
+        //            this.$emit('pushOrPopBreadcrumb', 'pop', '上傳', '/upload');
     },
-    methods: {
+    methods: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapMutations(['breadcrumb']), {
+        pushPath: function () {
+            let viewName = '上傳';
+            let action = 'push';
+            let viewUrl = '/upload';
+            this.$store.commit('breadcrumb', { viewName, action, viewUrl });
+        },
+        popPath: function () {
+            let viewName = '上傳';
+            let action = 'pop';
+            let viewUrl = '/upload';
+            this.$store.commit('breadcrumb', { viewName, action, viewUrl });
+        },
         getProjectsList: function () {
             let self = this;
             axios.get(__WEBPACK_IMPORTED_MODULE_0__api__["a" /* PROJECT_URL */]).then(function (response) {
@@ -23221,21 +23239,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post(__WEBPACK_IMPORTED_MODULE_0__api__["b" /* IMAGE_URL */], this.f_photo).then(function (response) {
                 if (response.data.result === true) {
                     self.responseResult = response.data.result;
+                    console.log('hee' + response.data.result);
                     self.responseID = response.data.data;
-                    swal("上傳圖片成功!", '', "success");
+                    swal("上傳圖片成功!", '跳轉至該圖片', "success");
+                    if (self.responseResult === true) {
+                        __WEBPACK_IMPORTED_MODULE_1__app__["router"].push('/projects/' + self.photo.selected + '/' + self.responseID);
+                    }
+                    console.log('no');
                 } else {
                     swal("上傳圖片失敗!", '', "error");
                 }
             }).catch(function (error) {
                 console.log(error);
             });
-            console.log('result:' + result);
-            if (this.responseResult) {
-                console.log('hee');
-                __WEBPACK_IMPORTED_MODULE_1__app__["router"].push('/projects/' + this.photo.selected + '/' + this.responseID);
-            }
         }
-    }
+    })
 });
 
 /***/ }),
@@ -23297,6 +23315,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
 
 
 
@@ -23307,14 +23327,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     data() {
         return {
             projectNameBarVisible: false,
-            projectName: '',
-            breadcrumb: [{ "name": 'Home', 'path': '/' }]
+            projectName: ''
         };
     },
     props: ['userID'],
-    computed: {},
+    computed: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapGetters(['breadcrumb'])),
     mounted() {},
-    methods: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapActions(['getProjectData']), {
+    methods: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapMutations(['breadcrumb']), __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapActions(['getProjectData']), {
         showAddProjectNameBar: function () {
             this.projectNameBarVisible = true;
         },
@@ -23334,25 +23353,25 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         cancelCreateNewProject: function () {
             this.projectNameBarVisible = false;
         },
-        fillBreadCrumbClass: function (index) {
-            if (this.checkBreadCrumbLengthIsOne()) {
-                return false;
-            }
-            if (Object.keys(this.breadcrumb).length - 1 > index) {
-                return true;
-            }
-            return false;
-        },
-        checkBreadCrumbLengthIsOne: function () {
-            return Object.keys(this.breadcrumb).length === 1 ? true : false;
-        },
-        checkActionTypeToAddOrRemove: function (actionType, viewName, viewUrl) {
-            if (actionType == 'push') {
-                this.breadcrumb.push({ "name": viewName, "path": viewUrl });
-            } else {
-                this.breadcrumb.pop();
-            }
-        },
+        //            fillBreadCrumbClass:function (index) {
+        //                if (this.checkBreadCrumbLengthIsOne()) {
+        //                    return false;
+        //                }
+        //                if (Object.keys(this.breadcrumb).length-1 > index) {
+        //                    return true;
+        //                }
+        //                return false;
+        //            },
+        //            checkBreadCrumbLengthIsOne:function () {
+        //                return (Object.keys(this.breadcrumb).length === 1) ? true : false;
+        //            },
+        //            checkActionTypeToAddOrRemove:function (actionType, viewName, viewUrl) {
+        //                if (actionType == 'push') {
+        //                    this.breadcrumb.push({"name":viewName,"path":viewUrl});
+        //                } else {
+        //                    this.breadcrumb.pop();
+        //                }
+        //            },
         changeViewToUploadView: function () {
             __WEBPACK_IMPORTED_MODULE_0__app__["router"].push({ path: '/upload' });
         }
@@ -23370,6 +23389,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__app__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuex__ = __webpack_require__(6);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 //
 //
 //
@@ -23509,12 +23530,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             projects: null
         };
     },
-    computed: {},
+    computed: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapGetters(['breadcrumb', 'selectedProjectID', 'selectedProjectName'])),
     mounted() {
         this.getThisPhoto();
+        this.updateBreadcrumb();
     },
     destroyed() {},
     methods: {
+        //            ...Vuex.mapMutations(['breadcrumb']),
+        updateBreadcrumb: function () {
+            let _selectedProjectID = this.selectedProjectID;
+            let _selectedProjectName = this.selectedProjectName;
+            let _imageID = this.$route.params.imageID;
+            let type = 'push';
+            let path = '/projects/' + _selectedProjectID + '/' + _imageID;
+            this.$store.commit('breadcrumb', { _selectedProjectName, type, path });
+            //                this.breadcrumb({ _selectedProjectName , type , path});
+        },
         getThisPhoto: function () {
             let imageID = this.$route.params.imageID;
             let self = this;
@@ -23554,7 +23586,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         backProject: function () {
-            __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/projects/' + this.imageData[0].projectID);
+            __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/projects/' + this.selectedProjectID);
         },
         nextPhoto: function () {
             __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/projects/' + this.imageData[0].projectID + "/" + this.imageIDList[this.selected + 1]);
@@ -23579,20 +23611,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         updatePhoto: function () {
             let self = this;
-            axios.put(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* IMAGE_URL */], this.image).then(response => {
+            axios.put(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* IMAGE_URL */] + '/' + this.image.id, this.image).then(response => {
                 self.projects = response.data.data;
                 self.getThisPhoto();
                 self.edit = false;
             }, err => {
                 console.log(err);
-            });
-            this.$http.put(active.api + 'photo/update', this.photo, active.headers).then(response => {
-                // this.$emit('changeCover');
-                console.log('updatePhoto');
-                this.getThisPhoto();
-                this.edit = false;
-            }, response => {
-                console.log(response);
             });
         },
         deletePhotoWarning: function () {
@@ -23665,15 +23689,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     computed: {},
-    mounted() {
-        console.log('有做');
-        this.$emit('pushOrPopBreadcrumb', 'push', this.image.title, '/projects/' + this.image.projectID);
-        this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/' + this.selectedProjectID);
-    },
-    destroyed() {
-        this.$emit('pushOrPopBreadcrumb', 'pup');
-        this.$emit('pushOrPopBreadcrumb', 'pop');
-    },
+    mounted() {},
+    destroyed() {},
     methods: {
         showImage: function () {
             __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/projects/' + this.image.projectID + "/" + this.image.id);
@@ -23722,12 +23739,26 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     computed: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapGetters(['selectedProjectID', 'selectedProjectName'])),
     mounted() {
         this.getImagesData();
-        this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/' + this.selectedProjectID);
+        this.pushPath();
+        //            this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/'+this.selectedProjectID);
     },
     destroyed() {
-        this.$emit('pushOrPopBreadcrumb', 'pop', this.selectedProjectName, '/projects/' + this.selectedProjectID);
+        this.popPath();
+        //            this.$emit('pushOrPopBreadcrumb', 'pop', this.selectedProjectName, '/projects/'+this.selectedProjectID);
     },
-    methods: {
+    methods: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapMutations(['breadcrumb']), {
+        pushPath: function () {
+            let viewName = this.selectedProjectName;
+            let action = 'push';
+            let viewUrl = '/projects/' + this.selectedProjectID;
+            this.$store.commit('breadcrumb', { viewName, action, viewUrl });
+        },
+        popPath: function () {
+            let viewName = this.selectedProjectName;
+            let action = 'pop';
+            let viewUrl = '/projects/' + this.selectedProjectID;
+            this.$store.commit('breadcrumb', { viewName, action, viewUrl });
+        },
         getImagesData: function () {
             let self = this;
             axios.get(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* PROJECT_URL */] + '/' + this.selectedProjectID).then(response => {
@@ -23735,11 +23766,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }, err => {
                 console.log(err);
             });
-        },
-        sendPath: function (actionType, viewName, viewUrl) {
-            //                this.$emit('pushOrPopBreadcrumb', actionType, viewName, viewUrl);
         }
-    },
+    }),
     components: {
         ImageItem: __WEBPACK_IMPORTED_MODULE_3__ImageItem_vue___default.a
     }
@@ -23942,7 +23970,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             selectedCover: null
         };
     },
-    computed: _extends({}, __WEBPACK_IMPORTED_MODULE_3_vuex__["a" /* default */].mapGetters(['projectData', 'selectedProjectID', 'modal', 'images'])),
+    computed: _extends({}, __WEBPACK_IMPORTED_MODULE_3_vuex__["a" /* default */].mapGetters(['projectData', 'selectedProjectID', 'modal', 'images', 'breadcrumb'])),
     mounted() {
         this.getProjectData();
     },
@@ -24122,6 +24150,13 @@ const mutations = {
     },
     selectedProjectName(state, value) {
         state.selectedProjectName = value;
+    },
+    breadcrumb(state, { viewName, action, viewUrl }) {
+        if (action == 'push') {
+            state.breadcrumb.push({ "name": viewName, "path": viewUrl });
+        } else {
+            state.breadcrumb.pop();
+        }
     }
 };
 
@@ -26581,7 +26616,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 52 */
@@ -26609,14 +26644,14 @@ exports.push([module.i, "\n.image-item {\n    display: inline-block;\n    positi
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 57 */
@@ -45469,6 +45504,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [_c('div', {
     staticClass: "row"
+  }, [_c('ol', {
+    staticClass: "breadcrumb breadcrumb-zh"
+  }, _vm._l((_vm.breadcrumb), function(bread, index) {
+    return _c('li', [_c('router-link', {
+      attrs: {
+        "to": bread.path
+      }
+    }, [_vm._v(_vm._s(bread.name))])], 1)
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-12"
   }, [_c('form', {
@@ -45575,9 +45620,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('router-view', {
     attrs: {
       "userID": _vm.userID
-    },
-    on: {
-      "pushOrPopBreadcrumb": _vm.checkActionTypeToAddOrRemove
     }
   })], 1)])
 },staticRenderFns: []}

@@ -35,6 +35,13 @@ const mutations = {
     },
     selectedProjectName ( state, value ) {
         state.selectedProjectName = value;
+    },
+    breadcrumb ( state , { viewName , action, viewUrl }) {
+        if (action == 'push') {
+            state.breadcrumb.push({"name":viewName,"path":viewUrl});
+        } else {
+            state.breadcrumb.pop();
+        }
     }
 };
 

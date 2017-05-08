@@ -38,13 +38,10 @@
         },
         computed: {},
         mounted () {
-            console.log('有做');
-            this.$emit('pushOrPopBreadcrumb', 'push', this.image.title, '/projects/'+this.image.projectID);
-            this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/'+this.selectedProjectID);
+
         },
         destroyed() {
-            this.$emit('pushOrPopBreadcrumb', 'pup');
-            this.$emit('pushOrPopBreadcrumb', 'pop');
+
         },
         methods: {
             showImage:function() {

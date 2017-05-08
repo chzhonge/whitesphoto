@@ -51,7 +51,7 @@
             }
         },
         computed:{
-            ...Vuex.mapGetters(['projectData','selectedProjectID','modal','images'])
+            ...Vuex.mapGetters(['projectData','selectedProjectID','modal','images','breadcrumb'])
         },
         mounted() {
             this.getProjectData();
@@ -61,7 +61,8 @@
         },
         methods: {
             ...Vuex.mapActions(['getProjectData']),
-            ...Vuex.mapMutations(['selectedProjectID']),
+            ...Vuex.mapMutations(['selectedProjectID'])
+            ,
             closeModelMenu:function() {
                 this.$store.commit('modal' , false);
             },

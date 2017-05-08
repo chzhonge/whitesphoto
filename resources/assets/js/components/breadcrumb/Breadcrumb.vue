@@ -1,13 +1,14 @@
 <template>
     <div class="container">
-        <!--<div class="row">-->
-            <!--<ol class="breadcrumb breadcrumb-zh">-->
-                <!--<li v-for="(bread, index) in breadcrumb">-->
+        <div class="row">
+            <ol class="breadcrumb breadcrumb-zh">
+                <li v-for="(bread, index) in breadcrumb">
+                    <router-link :to="bread.path">{{ bread.name }}</router-link>
+                    <!--<a to=="/example" v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }">{{ bread.name }}</a>-->
                     <!--<router-link v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }" :to="bread.path">{{ bread.name }}</router-link>-->
-                    <!--&lt;!&ndash;<a to=="/example" v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }">{{ bread.name }}</a>&ndash;&gt;-->
-                <!--</li>-->
-            <!--</ol>-->
-        <!--</div>-->
+                </li>
+            </ol>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <form role="form" class="form-inline" style="margin-bottom: 20px;">
@@ -40,7 +41,8 @@
             </div>
         </div>
         <div class="row">
-            <router-view :userID="userID" v-on:pushOrPopBreadcrumb="checkActionTypeToAddOrRemove" ></router-view>
+            <router-view :userID="userID"  ></router-view>
+            <!--v-on:pushOrPopBreadcrumb="checkActionTypeToAddOrRemove"-->
             <!--<router-view :projectData="projectData"  v-on:pushOrPopBreadcrumb="checkActionTypeToAddOrRemove" ></router-view>-->
         </div>
     </div>
@@ -57,16 +59,18 @@
             return {
                 projectNameBarVisible:false,
                 projectName:'',
-                breadcrumb:[{"name":'Home','path':'/'}]
+//                breadcrumb:[{"name":'Home','path':'/'}]
             }
         },
         props:['userID'],
         computed: {
+            ...Vuex.mapGetters(['breadcrumb'])
         },
         mounted () {
 
         },
         methods: {
+            ...Vuex.mapMutations(['breadcrumb']),
             ...Vuex.mapActions(['getProjectData']),
             showAddProjectNameBar:function() {
                 this.projectNameBarVisible = true;
@@ -89,25 +93,25 @@
             cancelCreateNewProject:function() {
                 this.projectNameBarVisible = false;
             },
-            fillBreadCrumbClass:function (index) {
-                if (this.checkBreadCrumbLengthIsOne()) {
-                    return false;
-                }
-                if (Object.keys(this.breadcrumb).length-1 > index) {
-                    return true;
-                }
-                return false;
-            },
-            checkBreadCrumbLengthIsOne:function () {
-                return (Object.keys(this.breadcrumb).length === 1) ? true : false;
-            },
-            checkActionTypeToAddOrRemove:function (actionType, viewName, viewUrl) {
-                if (actionType == 'push') {
-                    this.breadcrumb.push({"name":viewName,"path":viewUrl});
-                } else {
-                    this.breadcrumb.pop();
-                }
-            },
+//            fillBreadCrumbClass:function (index) {
+//                if (this.checkBreadCrumbLengthIsOne()) {
+//                    return false;
+//                }
+//                if (Object.keys(this.breadcrumb).length-1 > index) {
+//                    return true;
+//                }
+//                return false;
+//            },
+//            checkBreadCrumbLengthIsOne:function () {
+//                return (Object.keys(this.breadcrumb).length === 1) ? true : false;
+//            },
+//            checkActionTypeToAddOrRemove:function (actionType, viewName, viewUrl) {
+//                if (actionType == 'push') {
+//                    this.breadcrumb.push({"name":viewName,"path":viewUrl});
+//                } else {
+//                    this.breadcrumb.pop();
+//                }
+//            },
             changeViewToUploadView:function() {
                 router.push({ path: '/upload' });
             },

@@ -44,6 +44,7 @@
 <script>
     import { PROJECT_URL, IMAGE_URL } from './api';
     import { router } from './../app';
+    import Vuex from 'vuex';
 
     export default {
         data () {
@@ -67,70 +68,86 @@
         },
         mounted () {
             this.getProjectsList();
-            this.$emit('pushOrPopBreadcrumb', 'push', '上傳', '/upload');
+            this.pushPath();
+//            this.$emit('pushOrPopBreadcrumb', 'push', '上傳', '/upload');
         },
         destroyed() {
-            this.$emit('pushOrPopBreadcrumb', 'pop', '上傳', '/upload');
+            this.popPath();
+//            this.$emit('pushOrPopBreadcrumb', 'pop', '上傳', '/upload');
+
         },
         methods: {
-        getProjectsList:function() {
-            let self = this;
-            axios.get(PROJECT_URL)
-                .then(function (response) {
-                    self.projects = response.data.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        },
-        bindFile: function(e) {
-            // 附加image
-            this.f_photo.append('image', e.target.files[0]);
+            ...Vuex.mapMutations(['breadcrumb']),
+            pushPath:function () {
+                let viewName ='上傳';
+                let action ='push';
+                let viewUrl ='/upload';
+                this.$store.commit('breadcrumb' , {viewName,action,viewUrl});
+            },
+            popPath:function () {
+                let viewName ='上傳';
+                let action ='pop';
+                let viewUrl ='/upload';
+                this.$store.commit('breadcrumb' , {viewName,action,viewUrl});
+            },
+            getProjectsList:function() {
+                let self = this;
+                axios.get(PROJECT_URL)
+                    .then(function (response) {
+                        self.projects = response.data.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            bindFile: function(e) {
+                // 附加image
+                this.f_photo.append('image', e.target.files[0]);
 
-            // 上傳時顯示縮圖
-            var input = e.target;
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById("img").src = e.target.result;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-            this.show = true;
-
-        },
-        onSubmit: function(e) {
-            console.log('submit');
-
-            if(this.f_photo.image==undefined) {
-                this.f_photo.append('image', '');
-            }
-            this.f_photo.append('photoName',this.photo.photoName);
-            this.f_photo.append('author',this.photo.author);
-            this.f_photo.append('desc',this.photo.desc);
-            this.f_photo.append('selected',this.photo.selected);
-            this.f_photo.append('ownerID',this.photo.ownerID);
-            let self = this;
-            axios.post(IMAGE_URL, this.f_photo)
-                .then(function (response) {
-                    if (response.data.result === true) {
-                        self.responseResult = response.data.result;
-                        self.responseID = response.data.data;
-                        swal("上傳圖片成功!", '', "success");
-                    } else {
-                        swal("上傳圖片失敗!", '', "error");
+                // 上傳時顯示縮圖
+                var input = e.target;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById("img").src = e.target.result;
                     }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            console.log('result:'+result);
-            if (this.responseResult) {
-                console.log('hee');
-                router.push('/projects/'+this.photo.selected+'/'+this.responseID);
-            }
+                    reader.readAsDataURL(input.files[0]);
+                }
+                this.show = true;
 
-            }
+            },
+            onSubmit: function(e) {
+                console.log('submit');
+
+                if(this.f_photo.image==undefined) {
+                    this.f_photo.append('image', '');
+                }
+                this.f_photo.append('photoName',this.photo.photoName);
+                this.f_photo.append('author',this.photo.author);
+                this.f_photo.append('desc',this.photo.desc);
+                this.f_photo.append('selected',this.photo.selected);
+                this.f_photo.append('ownerID',this.photo.ownerID);
+                let self = this;
+                axios.post(IMAGE_URL, this.f_photo)
+                    .then(function (response) {
+                        if (response.data.result === true) {
+                            self.responseResult = response.data.result;
+                            console.log('hee'+response.data.result);
+                            self.responseID = response.data.data;
+                            swal("上傳圖片成功!", '跳轉至該圖片', "success");
+                            if (self.responseResult === true) {
+                                router.push('/projects/'+self.photo.selected+'/'+self.responseID);
+                            }
+                            console.log('no');
+                        } else {
+                            swal("上傳圖片失敗!", '', "error");
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+                }
         },
     }
 </script>
