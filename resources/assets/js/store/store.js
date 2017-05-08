@@ -100,7 +100,7 @@ const myPlugin = store => {
     // called when the store is initialized
     store.subscribe(( mutation, state ) => {
         // called after every mutation.
-        console.log( mutation );
+        // console.log( mutation );
         // The mutation comes in the format of { type, payload }.
     });
 };

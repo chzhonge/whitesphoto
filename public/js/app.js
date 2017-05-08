@@ -23525,7 +23525,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             edit: false,
             backImage: null,
             image: null,
-            projects: null
+            projects: null,
+            deleted: null
         };
     },
     computed: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapGetters(['breadcrumb', 'selectedProjectID', 'selectedProjectName'])),
@@ -23629,8 +23630,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }, function () {
                 axios.delete(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* IMAGE_URL */] + '/' + self.image.id).then(function (response) {
                     swal("刪除成功！", "該圖片已刪除", "success");
+                    self.deleted = true;
                     self.getProjectData();
-                    self.router.push('/project');
+                    __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/');
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -24209,7 +24211,7 @@ const myPlugin = store => {
     // called when the store is initialized
     store.subscribe((mutation, state) => {
         // called after every mutation.
-        console.log(mutation);
+        // console.log( mutation );
         // The mutation comes in the format of { type, payload }.
     });
 };
@@ -26611,7 +26613,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 52 */
