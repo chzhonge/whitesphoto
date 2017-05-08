@@ -72,8 +72,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="media" v-if="!edit" >
@@ -85,33 +83,6 @@
                 </div>
             </div>
         </div>
-
-        <!--<div class="row" v-if="!edit">-->
-            <!--<div class="col-md-3">-->
-                <!--<div v-for="image in imageData" >-->
-                    <!--<div v-if="!edit">-->
-                        <!--<div>-->
-                            <!--{{image.updated_at}}</h1>-->
-                        <!--</div>-->
-                        <!--<div>-->
-                            <!--<h1>{{image.title}}</h1>-->
-                        <!--</div>-->
-                        <!--<div>-->
-                            <!--{{image.author}}-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="col-md-6">-->
-                <!--<div v-for="image in imageData" >-->
-                    <!--<div v-if="!edit">-->
-                        <!--<p>-->
-                            <!--{{image.desc}}-->
-                        <!--</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
     </div>
 </template>
 
@@ -148,7 +119,6 @@
 
         },
         methods: {
-//            ...Vuex.mapMutations(['breadcrumb']),
             updateBreadcrumb:function () {
                 let _selectedProjectID = this.selectedProjectID;
                 let _selectedProjectName = this.selectedProjectName;
@@ -156,7 +126,6 @@
                 let type = 'push';
                 let path ='/projects/'+_selectedProjectID+'/'+_imageID;
                 this.$store.commit('breadcrumb' , { _selectedProjectName , type , path});
-//                this.breadcrumb({ _selectedProjectName , type , path});
             },
             getThisPhoto:function() {
                 let imageID =this.$route.params.imageID;
@@ -228,6 +197,7 @@
                     self.projects = response.data.data;
                     self.getThisPhoto();
                     self.edit = false;
+                    swal("更改圖片成功！", "該圖片已更改", "success");
                 }, (err) => {
                     console.log(err)
                 });

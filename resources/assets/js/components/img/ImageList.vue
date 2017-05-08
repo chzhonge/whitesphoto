@@ -28,11 +28,9 @@
         mounted () {
             this.getImagesData();
             this.pushPath();
-//            this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/'+this.selectedProjectID);
         },
         destroyed() {
             this.popPath();
-//            this.$emit('pushOrPopBreadcrumb', 'pop', this.selectedProjectName, '/projects/'+this.selectedProjectID);
         },
         methods: {
             ...Vuex.mapMutations(['breadcrumb']),
