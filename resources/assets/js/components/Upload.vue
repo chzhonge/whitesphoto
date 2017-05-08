@@ -10,6 +10,7 @@
             <div class="form-group">
                 <label for="file">上傳作品</label>
                 <input type="file" @change="bindFile" class="form-control">
+
             </div>
             <div class="form-group">
                 <label>作品名稱</label>
@@ -27,7 +28,7 @@
             <div class="form-group">
                 <label>儲存在哪一本收藏冊？</label>
                 <select class="form-control" v-model="photo.selected" >
-                    <option v-bind:value="0">選擇收藏冊</option>
+                    <option selected="selected" v-bind:value="0">選擇收藏冊</option>
                     <option v-for="(project, name) in projects" v-bind:value="project.id">{{ project.name }}</option>
                 </select>
                 <p class="text-warning" v-if="selectIDRe">請選擇收藏冊</p>
@@ -63,26 +64,22 @@
                 f_photo : new FormData(),
                 projects : null,
                 responseResult : false,
-                responseID : null
+                responseID : null,
+                uploadFileRe:true,
             }
         },
         computed: {
             photoNameRe:function () {
-                return this.photo.photoName === '' ? true : false;
+                return this.photo.photoName == '' ? true : false;
             },
             selectIDRe:function () {
-                return this.photo.selected === 0 ? true : false;
-            },
-            uploadFileRe:function () {
-                return typeof this.f_photo.get('image') === undefined ? true : false;
+                return this.photo.selected == 0 ? true : false;
             },
             canUpload:function () {
-                if (this.photoNameRe && this.selectIDRe ) {
-                    if (!this.uploadFileRe) {
-                        return true;
-                    }
+                if (this.photoNameRe == false && this.selectIDRe == false && this.uploadFileRe == false ) {
+                    return false;
                 }
-                return false;
+                return true;
             }
         },
         mounted () {
@@ -123,6 +120,12 @@
                 // 附加image
                 this.f_photo.append('image', e.target.files[0]);
 
+                if (!e.target.files.length) {
+                    this.uploadFileRe = true;
+                    this.show = false;
+                    return;
+                }
+
                 // 上傳時顯示縮圖
                 var input = e.target;
                 if (input.files && input.files[0]) {
@@ -131,6 +134,7 @@
                         document.getElementById("img").src = e.target.result;
                     }
                     reader.readAsDataURL(input.files[0]);
+                    this.uploadFileRe = false;
                 }
                 this.show = true;
 

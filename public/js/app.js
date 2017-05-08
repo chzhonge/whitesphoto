@@ -23159,6 +23159,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
 
 
 
@@ -23178,26 +23179,22 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             f_photo: new FormData(),
             projects: null,
             responseResult: false,
-            responseID: null
+            responseID: null,
+            uploadFileRe: true
         };
     },
     computed: {
         photoNameRe: function () {
-            return this.photo.photoName === '' ? true : false;
+            return this.photo.photoName == '' ? true : false;
         },
         selectIDRe: function () {
-            return this.photo.selected === 0 ? true : false;
-        },
-        uploadFileRe: function () {
-            return typeof this.f_photo.get('image') === undefined ? true : false;
+            return this.photo.selected == 0 ? true : false;
         },
         canUpload: function () {
-            if (this.photoNameRe && this.selectIDRe) {
-                if (!this.uploadFileRe) {
-                    return true;
-                }
+            if (this.photoNameRe == false && this.selectIDRe == false && this.uploadFileRe == false) {
+                return false;
             }
-            return false;
+            return true;
         }
     },
     mounted() {
@@ -23234,6 +23231,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             // 附加image
             this.f_photo.append('image', e.target.files[0]);
 
+            if (!e.target.files.length) {
+                this.uploadFileRe = true;
+                this.show = false;
+                return;
+            }
+
             // 上傳時顯示縮圖
             var input = e.target;
             if (input.files && input.files[0]) {
@@ -23242,6 +23245,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     document.getElementById("img").src = e.target.result;
                 };
                 reader.readAsDataURL(input.files[0]);
+                this.uploadFileRe = false;
             }
             this.show = true;
         },
@@ -26635,7 +26639,7 @@ exports.push([module.i, "\n.image-item {\n    display: inline-block;\n    positi
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 56 */
@@ -45422,6 +45426,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('option', {
+    attrs: {
+      "selected": "selected"
+    },
     domProps: {
       "value": 0
     }
