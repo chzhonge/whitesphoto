@@ -89,6 +89,4 @@ class ProjectRepository
 //    {
 //        return Project::where('id', $id)->value('name');
 //    }
-
-
 }

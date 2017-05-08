@@ -32,9 +32,7 @@ class ImageRepository
         $photo->desc = strval($request->desc);
         $photo->projectID = $request->selected;
 
-
         $file = $request->file('image');
-//        $this->rawType = getType($file->getMimeType());
 
         $imgName = $this->getImgName(); // 還沒加副檔名
         $rawPath = $this->copyImg($file, $imgName);
@@ -42,11 +40,12 @@ class ImageRepository
         $photo->rawPath = $rawPath;
         $photo->thumPath = $this->makeThumImg($rawPath, $imgName);
         $photo->save();
+        return $photo->id;
     }
 
     public function replaceType(string $fileType)
     {
-        return str_replace("image/","",$fileType);
+        return str_replace("image/", "", $fileType);
     }
 
     public function createDefaultPhoto(int $projectID)
@@ -78,7 +77,7 @@ class ImageRepository
 
     public function getPhotoIDList(int $projectID)
     {
-        $photo = Photo::where('projectID',$projectID)
+        $photo = Photo::where('projectID', $projectID)
             ->orderBy('id', 'asc')
             ->pluck('id')->all();
         return $photo;
@@ -86,43 +85,19 @@ class ImageRepository
 
     public function getCoverThumPath(int $photoID)
     {
-        $photo = Photo::where('id',$photoID)->value('thumPath');
+        $photo = Photo::where('id', $photoID)->value('thumPath');
         return $photo;
     }
 
-    public function getCoverPreviewList(int $userID, int $selectedCollectionID, int $defaultID,string $selectedCollectionName)
-    {
-        $photo = array();
-        if ($selectedCollectionID == $defaultID) {
-            //$photo[] = Photo::where('collectionsID', $selectedCollectionID)->get();
-            $photo[] = array(
-                'collectionName' => '預設',
-                'id' => $defaultID,
-                'data' => Photo::where('projectID', $defaultID)->get());
-            return $photo; //array('collectionName' => '預設', 'data' => $photo);
-        }
-
-        $photo[] = array(
-            'collectionName' => '預設',
-            'id' => $defaultID,
-            'data' => Photo::where('projectID', $defaultID)->get());
-
-        $photo[] = array(
-            'collectionName' => $selectedCollectionName,
-            'id' => $selectedCollectionID,
-            'data' => Photo::where('projectID', $selectedCollectionID)->get());
-
-        return $photo;
-    }
 
     public function deletePhoto(int $photoID)
     {
-        Photo::where('id',$photoID)->delete();
+        Photo::where('id', $photoID)->delete();
     }
 
     public function updatePhoto(Request $request)
     {
-        Photo::where('id',$request->id)
+        Photo::where('id', $request->id)
             ->update(['title' => $request->title,
                 'author' => $request->author ,
                 'desc' => $request->desc ,
@@ -130,13 +105,15 @@ class ImageRepository
             ]);
     }
 
-    public function getImgName() {
+    public function getImgName()
+    {
         return strval(Carbon::now()->timestamp);
     }
 
 
-    public function copyImg($file, string $imgName) {
-        $file->move($this->rawBasePath,$imgName);
+    public function copyImg($file, string $imgName)
+    {
+        $file->move($this->rawBasePath, $imgName);
 
         $type = '.'.$this->replaceType(mime_content_type($this->rawBasePath.$imgName));
         rename($this->rawBasePath.$imgName, $this->rawBasePath.$imgName.$type);
@@ -144,10 +121,11 @@ class ImageRepository
         return $longRawPath;
     }
 
-    public function makeThumImg(string $longRawPath, string $imgName) {
+    public function makeThumImg(string $longRawPath, string $imgName)
+    {
         Image::open($longRawPath)
             ->cropResize($this->thumWidth, $this->thumHeight)
-            ->save($this->thumBasePath.$imgName.$this->imgFormat,'jpg');
+            ->save($this->thumBasePath.$imgName.$this->imgFormat, 'jpg');
         $longThumPath = $this->thumBasePath.$imgName.$this->imgFormat;
         return $longThumPath;
     }

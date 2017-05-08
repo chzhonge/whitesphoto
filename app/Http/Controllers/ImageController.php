@@ -58,10 +58,10 @@ class ImageController extends Controller
                 ,'because' => $validator->messages()]);
         }
 
-        $this->imageRepository->createPhoto($request);
         return response()->json([
             'state' => 'createPhoto'
-            ,'result' => true]);
+            ,'result' => true
+            ,'data' => $this->imageRepository->createPhoto($request)]);
     }
 
     /**

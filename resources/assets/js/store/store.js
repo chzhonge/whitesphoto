@@ -35,25 +35,6 @@ const mutations = {
     },
     selectedProjectName ( state, value ) {
         state.selectedProjectName = value;
-    },
-    checkBreadCrumbLengthIsOne ( state ) {
-        return (Object.keys(state.breadcrumb).length === 1) ? true : false;
-    },
-    checkActionTypeToAddOrRemove( state ,{actionType, viewName, viewUrl} ){
-        if (actionType == 'push') {
-            state.breadcrumb.push({"name":viewName,"path":viewUrl});
-        } else {
-            state.breadcrumb.pop();
-        }
-    },
-    fillBreadCrumbClass:function ( state , index) {
-        if (this.checkBreadCrumbLengthIsOne()) {
-            return false;
-        }
-        if (Object.keys(state.breadcrumb).length-1 > index) {
-            return true;
-        }
-        return false;
     }
 };
 

@@ -43,6 +43,7 @@
 
 <script>
     import { PROJECT_URL, IMAGE_URL } from './api';
+    import { router } from './../app';
 
     export default {
         data () {
@@ -57,6 +58,8 @@
                 },
                 f_photo : new FormData(),
                 projects : null,
+                responseResult : false,
+                responseID : null
             }
         },
         computed: {
@@ -107,11 +110,12 @@
             this.f_photo.append('desc',this.photo.desc);
             this.f_photo.append('selected',this.photo.selected);
             this.f_photo.append('ownerID',this.photo.ownerID);
-
             let self = this;
             axios.post(IMAGE_URL, this.f_photo)
                 .then(function (response) {
                     if (response.data.result === true) {
+                        self.responseResult = response.data.result;
+                        self.responseID = response.data.data;
                         swal("上傳圖片成功!", '', "success");
                     } else {
                         swal("上傳圖片失敗!", '', "error");
@@ -120,6 +124,12 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+            console.log('result:'+result);
+            if (this.responseResult) {
+                console.log('hee');
+                router.push('/projects/'+this.photo.selected+'/'+this.responseID);
+            }
+
             }
         },
     }

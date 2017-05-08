@@ -19,7 +19,10 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             @if (Auth::guest())
-
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ route('login') }}">Login</a></li>
+                    <li><a href="{{ route('register') }}">Register</a></li>
+                </ul>
             @else
             <ul class="nav navbar-nav">
                 <li> <router-link to="/">收藏冊</router-link></li>
