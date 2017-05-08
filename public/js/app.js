@@ -23156,6 +23156,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
 
 
 
@@ -23178,7 +23181,25 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             responseID: null
         };
     },
-    computed: {},
+    computed: {
+        photoNameRe: function () {
+            return this.photo.photoName === '' ? true : false;
+        },
+        selectIDRe: function () {
+            return this.photo.selected === 0 ? true : false;
+        },
+        uploadFileRe: function () {
+            return typeof this.f_photo.get('image') === undefined ? true : false;
+        },
+        canUpload: function () {
+            if (this.photoNameRe && this.selectIDRe) {
+                if (!this.uploadFileRe) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    },
     mounted() {
         this.getProjectsList();
         this.pushPath();
@@ -23224,8 +23245,10 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }
             this.show = true;
         },
+        cancelUpload: function () {
+            __WEBPACK_IMPORTED_MODULE_1__app__["router"].push('/');
+        },
         onSubmit: function (e) {
-            console.log('submit');
 
             if (this.f_photo.image == undefined) {
                 this.f_photo.append('image', '');
@@ -23479,35 +23502,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -23537,7 +23531,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     },
     destroyed() {},
     methods: {
-        //            ...Vuex.mapMutations(['breadcrumb']),
         updateBreadcrumb: function () {
             let _selectedProjectID = this.selectedProjectID;
             let _selectedProjectName = this.selectedProjectName;
@@ -23545,7 +23538,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             let type = 'push';
             let path = '/projects/' + _selectedProjectID + '/' + _imageID;
             this.$store.commit('breadcrumb', { _selectedProjectName, type, path });
-            //                this.breadcrumb({ _selectedProjectName , type , path});
         },
         getThisPhoto: function () {
             let imageID = this.$route.params.imageID;
@@ -23615,6 +23607,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 self.projects = response.data.data;
                 self.getThisPhoto();
                 self.edit = false;
+                swal("更改圖片成功！", "該圖片已更改", "success");
             }, err => {
                 console.log(err);
             });
@@ -23740,11 +23733,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     mounted() {
         this.getImagesData();
         this.pushPath();
-        //            this.$emit('pushOrPopBreadcrumb', 'push', this.selectedProjectName, '/projects/'+this.selectedProjectID);
     },
     destroyed() {
         this.popPath();
-        //            this.$emit('pushOrPopBreadcrumb', 'pop', this.selectedProjectName, '/projects/'+this.selectedProjectID);
     },
     methods: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapMutations(['breadcrumb']), {
         pushPath: function () {
@@ -26616,7 +26607,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 52 */
@@ -26644,14 +26635,14 @@ exports.push([module.i, "\n.image-item {\n    display: inline-block;\n    positi
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 57 */
@@ -45362,7 +45353,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.photo.photoName = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), (_vm.photoNameRe) ? _c('p', {
+    staticClass: "text-warning"
+  }, [_vm._v("作品名稱為必填")]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', [_vm._v("作者姓名")]), _vm._v(" "), _c('input', {
     directives: [{
@@ -45409,7 +45402,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("儲存在哪一本作品集？")]), _vm._v(" "), _c('select', {
+  }, [_c('label', [_vm._v("儲存在哪一本收藏冊？")]), _vm._v(" "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -45432,13 +45425,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     domProps: {
       "value": 0
     }
-  }, [_vm._v("選擇作品集")]), _vm._v(" "), _vm._l((_vm.projects), function(project, name) {
+  }, [_vm._v("選擇收藏冊")]), _vm._v(" "), _vm._l((_vm.projects), function(project, name) {
     return _c('option', {
       domProps: {
         "value": project.id
       }
     }, [_vm._v(_vm._s(project.name))])
-  })], 2)]), _vm._v(" "), _c('div', {
+  })], 2), _vm._v(" "), (_vm.selectIDRe) ? _c('p', {
+    staticClass: "text-warning"
+  }, [_vm._v("請選擇收藏冊")]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "form-group text-center"
   }, [_c('input', {
     staticClass: "btn btn-success btn-lg",
@@ -45447,6 +45442,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     attrs: {
       "type": "button",
+      "disabled": _vm.canUpload,
       "value": "上傳"
     },
     on: {
@@ -45459,6 +45455,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     attrs: {
       "type": "button"
+    },
+    on: {
+      "click": _vm.cancelUpload
     }
   }, [_vm._v("取消")])])])])
 },staticRenderFns: []}

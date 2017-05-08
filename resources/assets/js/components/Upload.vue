@@ -14,6 +14,7 @@
             <div class="form-group">
                 <label>作品名稱</label>
                 <input v-model="photo.photoName" type="text" class="form-control">
+                <p class="text-warning" v-if="photoNameRe">作品名稱為必填</p>
             </div>
             <div class="form-group">
                 <label>作者姓名</label>
@@ -24,18 +25,20 @@
                 <textarea v-model="photo.desc" class="form-control" rows="8" cols="40"></textarea>
             </div>
             <div class="form-group">
-                <label>儲存在哪一本作品集？</label>
+                <label>儲存在哪一本收藏冊？</label>
                 <select class="form-control" v-model="photo.selected" >
-                    <option v-bind:value="0">選擇作品集</option>
+                    <option v-bind:value="0">選擇收藏冊</option>
                     <option v-for="(project, name) in projects" v-bind:value="project.id">{{ project.name }}</option>
                 </select>
+                <p class="text-warning" v-if="selectIDRe">請選擇收藏冊</p>
             </div>
             <div class="form-group text-center">
                 <input type="button" class='btn btn-success btn-lg'
-                style="width:45%;"
-                v-on:click='onSubmit'
+                style="width:45%;" v-on:click='onSubmit' v-bind:disabled="canUpload"
                 value="上傳" />
-                <button type="button" class='btn btn-danger btn-lg' style="width:45%;" >取消</button>
+                <button type="button" class='btn btn-danger btn-lg' style="width:45%;"
+                v-on:click="cancelUpload"
+                >取消</button>
             </div>
         </form>
     </div>
@@ -51,11 +54,11 @@
             return  {
                 show : false,
                 photo : {
-                photoName : '',
-                author : '',
-                desc :'',
-                selected : 0,
-                ownerID : ''
+                    photoName : '',
+                    author : '',
+                    desc :'',
+                    selected : 0,
+                    ownerID : ''
                 },
                 f_photo : new FormData(),
                 projects : null,
@@ -64,7 +67,23 @@
             }
         },
         computed: {
-
+            photoNameRe:function () {
+                return this.photo.photoName === '' ? true : false;
+            },
+            selectIDRe:function () {
+                return this.photo.selected === 0 ? true : false;
+            },
+            uploadFileRe:function () {
+                return typeof this.f_photo.get('image') === undefined ? true : false;
+            },
+            canUpload:function () {
+                if (this.photoNameRe && this.selectIDRe ) {
+                    if (!this.uploadFileRe) {
+                        return true;
+                    }
+                }
+                return false;
+            }
         },
         mounted () {
             this.getProjectsList();
@@ -116,8 +135,11 @@
                 this.show = true;
 
             },
+            cancelUpload:function () {
+                router.push('/');
+            },
             onSubmit: function(e) {
-                console.log('submit');
+
 
                 if(this.f_photo.image==undefined) {
                     this.f_photo.append('image', '');
