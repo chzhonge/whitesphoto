@@ -167,7 +167,8 @@
                 })
             },
             backProject:function() {
-                router.push('/projects/'+this.selectedProjectID);
+                let _projectID = this.$route.params.id;
+                router.push('/projects/'+_projectID);
             },
             nextPhoto:function() {
                 router.push('/projects/'+this.imageData[0].projectID
