@@ -449,8 +449,9 @@ __webpack_require__(48);
  */
 
 
-// import Vuex from 'vuex'
 
+// Vue.config.debug = false;
+// Vue.config.devtools = false;
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 
@@ -23524,25 +23525,37 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             nextAble: true,
             edit: false,
             backImage: null,
-            image: null,
+            image: {},
             projects: null,
             deleted: null
         };
     },
-    computed: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapGetters(['breadcrumb', 'selectedProjectID', 'selectedProjectName'])),
+    computed: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapGetters(['selectedProjectID', 'selectedProjectName'])),
     mounted() {
+        this.updateProjectName();
         this.getThisPhoto();
-        this.updateBreadcrumb();
     },
-    destroyed() {},
+    destroyed() {
+        this.popPath();
+    },
     methods: {
+        updateProjectName: function () {
+            let viewName = this.selectedProjectName;
+            let action = 'push';
+            let viewUrl = '/projects/' + this.selectedProjectID;
+            this.$store.commit('breadcrumb', { viewName, action, viewUrl });
+        },
         updateBreadcrumb: function () {
-            let _selectedProjectID = this.selectedProjectID;
-            let _selectedProjectName = this.selectedProjectName;
-            let _imageID = this.$route.params.imageID;
-            let type = 'push';
-            let path = '/projects/' + _selectedProjectID + '/' + _imageID;
-            this.$store.commit('breadcrumb', { _selectedProjectName, type, path });
+            let viewName = this.image.title;
+            let action = 'push';
+            let viewUrl = '/projects/' + this.selectedProjectID + '/' + this.$route.params.imageID;
+            this.$store.commit('breadcrumb', { viewName, action, viewUrl });
+        },
+        popPath: function () {
+            let viewName = this.selectedProjectName;
+            let action = 'pop';
+            let viewUrl = '/projects/' + this.selectedProjectID;
+            this.$store.commit('breadcrumb', { viewName, action, viewUrl });
         },
         getThisPhoto: function () {
             let imageID = this.$route.params.imageID;
@@ -23552,6 +23565,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 self.image = response.data.result[0];
                 self.getProjectID();
                 self.getProjectData();
+                self.updateBreadcrumb();
             }, err => {
                 console.log(err);
             });
@@ -23584,15 +23598,18 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         backProject: function () {
             let _projectID = this.$route.params.id;
+            this.popPath();
             __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/projects/' + _projectID);
         },
         nextPhoto: function () {
+            this.popPath();
             __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/projects/' + this.imageData[0].projectID + "/" + this.imageIDList[this.selected + 1]);
             this.prevAble = true;
             this.nextAble = true;
             this.getThisPhoto();
         },
         prevPhoto: function () {
+            this.popPath();
             __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/projects/' + this.imageData[0].projectID + "/" + this.imageIDList[this.selected - 1]);
             this.prevAble = true;
             this.nextAble = true;
@@ -23631,6 +23648,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             }, function () {
                 axios.delete(__WEBPACK_IMPORTED_MODULE_1__api__["b" /* IMAGE_URL */] + '/' + self.image.id).then(function (response) {
                     swal("刪除成功！", "該圖片已刪除", "success");
+                    self.popPath();
                     self.deleted = true;
                     self.getProjectData();
                     __WEBPACK_IMPORTED_MODULE_0__app__["router"].push('/');
@@ -23759,7 +23777,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         },
         getImagesData: function () {
             let self = this;
-            axios.get(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* PROJECT_URL */] + '/' + this.selectedProjectID).then(response => {
+            let id = this.$route.params.id;
+            axios.get(__WEBPACK_IMPORTED_MODULE_1__api__["a" /* PROJECT_URL */] + '/' + id).then(response => {
                 self.images = response.data.data;
             }, err => {
                 console.log(err);
@@ -24150,6 +24169,7 @@ const mutations = {
         state.selectedProjectName = value;
     },
     breadcrumb(state, { viewName, action, viewUrl }) {
+        console.log('viewName:' + viewName + " action:" + action);
         if (action == 'push') {
             state.breadcrumb.push({ "name": viewName, "path": viewUrl });
         } else {
@@ -26614,7 +26634,7 @@ if (typeof jQuery === 'undefined') {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 52 */
@@ -26649,7 +26669,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 57 */
@@ -44961,7 +44981,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("編輯")])])])])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-md-12"
+    staticClass: "col-md-12 col-lg-12"
   }, _vm._l((_vm.imageData), function(image) {
     return _c('img', {
       staticClass: "img-responsive img-thumbnaii",
@@ -44977,7 +44997,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-md-12"
+    staticClass: "col-md-12 col-lg-12"
   }, [_c('form', {
     attrs: {
       "role": "form"
@@ -45118,13 +45138,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-body"
-  }, [(!_vm.edit) ? _c('div', {
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.edit),
+      expression: "!edit"
+    }],
     staticClass: "media"
   }, [_vm._v("\n                " + _vm._s(_vm.image.updated_at) + "\n                "), _c('div', {
     staticClass: "media-body"
   }, [_c('h4', {
     staticClass: "media-heading"
-  }, [_vm._v(_vm._s(_vm.image.title) + " by " + _vm._s(_vm.image.author))]), _vm._v("\n                    " + _vm._s(_vm.image.desc) + "\n                ")])]) : _vm._e()])])])
+  }, [_vm._v(_vm._s(_vm.image.title) + " by " + _vm._s(_vm.image.author))]), _vm._v("\n                    " + _vm._s(_vm.image.desc) + "\n                ")])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -45541,7 +45567,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.showAddProjectNameBar
     }
-  }, [_vm._v("\n                    建立作品集\n                ")]), _vm._v(" "), _c('transition', {
+  }, [_vm._v("\n                    建立收藏冊\n                ")]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "fade"
     }
@@ -45563,7 +45589,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "projectNameBarVisible"
     }],
     staticClass: "form-group"
-  }, [_c('label', [_vm._v("作品集名稱")]), _vm._v(" "), _c('input', {
+  }, [_c('label', [_vm._v("收藏冊名稱：")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",

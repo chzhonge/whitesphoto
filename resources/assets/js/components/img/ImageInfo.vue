@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="row" >
-            <div class="col-md-12">
+            <div class="col-md-12 col-lg-12">
                 <img class="img-responsive img-thumbnaii" v-for="image in imageData" v-bind:src="image.rawPath" alt="" />
             </div>
         </div>
@@ -31,7 +31,7 @@
         <div class="panel" v-if="edit">
             <div class="panel-body">
                 <div class="row"  >
-                    <div class="col-md-12">
+                    <div class="col-md-12 col-lg-12">
                         <form role="form">
                             <div class="form-group">
                                 <label>作品名稱</label>
@@ -74,7 +74,7 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="media" v-if="!edit" >
+                <div class="media" v-show="!edit" >
                     {{ image.updated_at }}
                     <div class="media-body">
                         <h4 class="media-heading">{{ image.title }} by {{ image.author }}</h4>
@@ -104,29 +104,41 @@
                 nextAble : true,
                 edit : false,
                 backImage : null,
-                image : null,
+                image : {
+
+                },
                 projects : null,
                 deleted:null
             }
         },
         computed: {
-            ...Vuex.mapGetters(['breadcrumb','selectedProjectID','selectedProjectName'])
+            ...Vuex.mapGetters(['selectedProjectID','selectedProjectName'])
         },
         mounted () {
+            this.updateProjectName();
             this.getThisPhoto();
-            this.updateBreadcrumb();
         },
         destroyed() {
-
+            this.popPath();
         },
         methods: {
+            updateProjectName:function () {
+                let viewName = this.selectedProjectName;
+                let action ='push';
+                let viewUrl ='/projects/'+this.selectedProjectID;
+                this.$store.commit('breadcrumb' , {viewName,action,viewUrl});
+            },
             updateBreadcrumb:function () {
-                let _selectedProjectID = this.selectedProjectID;
-                let _selectedProjectName = this.selectedProjectName;
-                let _imageID = this.$route.params.imageID;
-                let type = 'push';
-                let path ='/projects/'+_selectedProjectID+'/'+_imageID;
-                this.$store.commit('breadcrumb' , { _selectedProjectName , type , path});
+                let viewName = this.image.title;
+                let action ='push';
+                let viewUrl ='/projects/'+this.selectedProjectID+'/'+this.$route.params.imageID;
+                this.$store.commit('breadcrumb' , {viewName,action,viewUrl});
+            },
+            popPath:function () {
+                let viewName = this.selectedProjectName;
+                let action = 'pop';
+                let viewUrl = '/projects/'+this.selectedProjectID;
+                this.$store.commit('breadcrumb' , {viewName,action,viewUrl});
             },
             getThisPhoto:function() {
                 let imageID =this.$route.params.imageID;
@@ -136,6 +148,7 @@
                     self.image = response.data.result[0];
                     self.getProjectID();
                     self.getProjectData();
+                    self.updateBreadcrumb();
                 }, (err) => {
                     console.log(err)
                 });
@@ -168,9 +181,11 @@
             },
             backProject:function() {
                 let _projectID = this.$route.params.id;
+                this.popPath();
                 router.push('/projects/'+_projectID);
             },
             nextPhoto:function() {
+                this.popPath();
                 router.push('/projects/'+this.imageData[0].projectID
                     +"/"+this.imageIDList[this.selected+1]);
                 this.prevAble = true;
@@ -178,6 +193,7 @@
                 this.getThisPhoto();
             },
             prevPhoto:function() {
+                this.popPath();
                 router.push('/projects/'+this.imageData[0].projectID
                     +"/"+this.imageIDList[this.selected-1]);
                 this.prevAble = true;
@@ -219,6 +235,7 @@
                         axios.delete(IMAGE_URL+'/'+self.image.id)
                             .then(function (response) {
                                 swal("刪除成功！", "該圖片已刪除", "success");
+                                self.popPath();
                                 self.deleted = true;
                                 self.getProjectData();
                                 router.push('/');

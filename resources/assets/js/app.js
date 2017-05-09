@@ -14,8 +14,10 @@ require('./bootstrap');
  */
 import VueRouter from 'vue-router';
 import store from "./store/store";
-// import Vuex from 'vuex'
 
+
+// Vue.config.debug = false;
+// Vue.config.devtools = false;
 
 Vue.use(VueRouter);
 

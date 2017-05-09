@@ -48,7 +48,8 @@
             },
             getImagesData:function () {
                 let self = this;
-                axios.get(PROJECT_URL+'/'+this.selectedProjectID).then((response) => {
+                let id = this.$route.params.id;
+                axios.get(PROJECT_URL+'/'+id).then((response) => {
                     self.images = response.data.data;
                 }, (err) => {
                     console.log(err)

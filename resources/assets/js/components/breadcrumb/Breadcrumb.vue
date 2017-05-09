@@ -13,12 +13,12 @@
             <div class="col-md-12">
                 <form role="form" class="form-inline" style="margin-bottom: 20px;">
                     <button type="button" v-on:click="showAddProjectNameBar" class='btn btn-primary btn-lg'>
-                        建立作品集
+                        建立收藏冊
                     </button>
                     <transition name="fade">
                         <div style='display:inline;' v-show="projectNameBarVisible">
                             <div class="form-group" v-show="projectNameBarVisible">
-                                <label >作品集名稱</label>
+                                <label >收藏冊名稱：</label>
                                 <input class='form-control' v-model="projectName" type="text">
                             </div>
                             <div class="form-group" v-show="projectNameBarVisible">
