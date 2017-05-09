@@ -3,7 +3,9 @@
         <div class="row">
             <ol class="breadcrumb breadcrumb-zh">
                 <li v-for="(bread, index) in breadcrumb">
-                    <router-link :to="bread.path">{{ bread.name }}</router-link>
+                    <router-link  :to="bread.path">
+                        <span v-on:click="routerPopPath(bread.name, index+1)">{{ bread.name }}</span>
+                    </router-link>
                     <!--<a to=="/example" v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }">{{ bread.name }}</a>-->
                     <!--<router-link v-bind:class="{ active: fillBreadCrumbClass(index), 'gray-font': !fillBreadCrumbClass(index) }" :to="bread.path">{{ bread.name }}</router-link>-->
                 </li>
@@ -72,6 +74,20 @@
         methods: {
             ...Vuex.mapMutations(['breadcrumb']),
             ...Vuex.mapActions(['getProjectData']),
+            routerPopPath:function (name, index) {
+
+                if (Object.keys(this.breadcrumb).length > index ) {
+
+                    if (name === 'Home') {
+                        return;
+                    }
+                    console.log('pop:'+name);
+                    let viewName = '';
+                    let action = 'pop';
+                    let viewUrl = '';
+                    this.$store.commit('breadcrumb' , {viewName,action,viewUrl});
+                }
+            },
             showAddProjectNameBar:function() {
                 this.projectNameBarVisible = true;
             },

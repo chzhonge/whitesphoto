@@ -23345,6 +23345,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
 
 
 
@@ -23362,6 +23364,20 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
     computed: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapGetters(['breadcrumb'])),
     mounted() {},
     methods: _extends({}, __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapMutations(['breadcrumb']), __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].mapActions(['getProjectData']), {
+        routerPopPath: function (name, index) {
+
+            if (Object.keys(this.breadcrumb).length > index) {
+
+                if (name === 'Home') {
+                    return;
+                }
+                console.log('pop:' + name);
+                let viewName = '';
+                let action = 'pop';
+                let viewUrl = '';
+                this.$store.commit('breadcrumb', { viewName, action, viewUrl });
+            }
+        },
         showAddProjectNameBar: function () {
             this.projectNameBarVisible = true;
         },
@@ -45546,7 +45562,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "to": bread.path
       }
-    }, [_vm._v(_vm._s(bread.name))])], 1)
+    }, [_c('span', {
+      on: {
+        "click": function($event) {
+          _vm.routerPopPath(bread.name, index + 1)
+        }
+      }
+    }, [_vm._v(_vm._s(bread.name))])])], 1)
   }))]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
